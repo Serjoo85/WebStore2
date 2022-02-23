@@ -1,10 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
 
 app.UseRouting();
 
-app.MapGet("/", () => app.Configuration["ServerGreetings"]);
+app.MapGet("/greetings", () => app.Configuration["ServerGreetings"]);
 
 app.MapDefaultControllerRoute();
 app.MapControllerRoute(
