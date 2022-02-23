@@ -12,7 +12,7 @@ namespace WebStore.Controllers
         }
         public IActionResult Index()
         {
-            return Content("Hellow from controller!");
+            return View();
         }
 
         public IActionResult ContentString(string Id = "-id-")
