@@ -23,14 +23,14 @@ namespace WebStore.Controllers
             return View(__Employees);
         }
 
-        public IActionResult ContentString(string Id = "-id-")
+        public IActionResult Index()
         {
-            return Content($"content: {Id}");
+            return View();
         }
 
-        public IActionResult ConfigString()
+        public IActionResult PersonalCard(int id)
         {
-            return Content($"config: {_configuration["ServerGreetings"]}");
+            return View(__Employees[id - 1]);
         }
     }
 }
