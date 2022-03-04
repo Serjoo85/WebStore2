@@ -1,0 +1,37 @@
+﻿@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
+@model IEnumerable<WebStore.Models.Employee>
+<DOCTYPE html>
+    <html>
+        <head>
+            <title>Работники</title>
+        </head>
+    </html>
+
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Возраст</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var employee in Model)
+                {
+                    <tr>
+                        <td>
+                            <a asp-controller="Home" asp-action="PersonalCard" asp-route-id=@employee.Id>@employee.LastName
+                            </a>
+                        </td>
+                        <td>@employee.FirstName</td>
+                        <td>@employee.Patronymic</td>
+                        <td>@employee.Age</td>
+                    </tr>
+                }
+            </tbody>
+        </table>        
+
+    </body>
+</DOCTYPE>

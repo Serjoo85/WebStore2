@@ -1,0 +1,38 @@
+﻿@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
+@model WebStore.Models.Employee
+<DOCTYPE html>
+    <html>
+        <head>
+            <title>Работники</title>
+        </head>
+    </html>
+
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Сотрудник Id: @Model.Id</th> 
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td>Фамилия</td>
+                        <td>Имя</td>
+                        <td>Отчество</td>
+                        <td>Должность</td>
+                        <td>Зарплата</td>
+                        <td>Возраст</td>
+                    </tr>
+                    <tr>
+                        <td>@Model.LastName</td>
+                        <td>@Model.FirstName</td>
+                        <td>@Model.Patronymic</td>
+                        <td>@Model.Position</td>
+                        <td>@Model.Salary</td>
+                        <td>@Model.Age</td>
+                    </tr>
+            </tbody>
+        </table>
+        <a asp-controller="Home" asp-action="Employees">Назад</a>
+    </body>
+</DOCTYPE>
