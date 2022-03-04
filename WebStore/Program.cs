@@ -4,7 +4,14 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+app.UseStaticFiles();
+
 app.UseRouting();
+
+app.MapGet("/throw", () =>
+{
+    throw new ApplicationException("ksjdflk");
+});
 
 app.MapControllerRoute(
     name: "default",
