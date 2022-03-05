@@ -8,11 +8,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.MapGet("/throw", () =>
-{
-    throw new ApplicationException("ksjdflk");
-});
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
