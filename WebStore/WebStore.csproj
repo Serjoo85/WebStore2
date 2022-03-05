@@ -6,4 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\js\contact.js" />
+    <None Include="wwwroot\js\gmaps.js" />
+    <None Include="wwwroot\js\html5shiv.js" />
+    <None Include="wwwroot\js\main.js" />
+    <None Include="wwwroot\js\price-range.js" />
+  </ItemGroup>
+
 </Project>
