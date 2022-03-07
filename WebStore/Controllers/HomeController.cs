@@ -15,5 +15,10 @@ namespace WebStore.Controllers
         {
             return View();
         }
+
+        public IActionResult Sum(int a, int b)
+        {
+            return Content((a + b).ToString());
+        }
     }
 }

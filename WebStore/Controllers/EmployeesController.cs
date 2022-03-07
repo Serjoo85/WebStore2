@@ -16,8 +16,9 @@ namespace WebStore.Controllers
         {
             return View(__Employees);
         }
-
-        public IActionResult Detailes(int Id)
+        
+        //[Route("~/employees/info-{Id:int}")]
+        public IActionResult Details(int Id)
         {
             var employee = __Employees.FirstOrDefault(e => e.Id == Id);
             if(employee == null)
