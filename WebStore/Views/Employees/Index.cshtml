@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebStore.Models.Employee>
+﻿@model IEnumerable<Employee>
 <div class="container">
     <table class="table">
         <thead>
@@ -14,13 +14,18 @@
             {
                 <tr>
                     <td>
-                        <a asp-controller="Employees" asp-action="Details" asp-route-id=@employee.Id>
+                        <a asp-action="Details" asp-route-id=@employee.Id>
                             @employee.LastName
                         </a>
                     </td>
                     <td>@employee.FirstName</td>
                     <td>@employee.Patronymic</td>
                     <td>@employee.Age</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@employee.Id">
+                            <span class="fa fa-edit"></span>
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
