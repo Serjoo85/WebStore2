@@ -1,8 +1,14 @@
 using WebStore.Infrastructure.Middleware;
+using WebStore.Services;
+using WebStore.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+var services = builder.Services;
+
+services.AddControllersWithViews();
+
+services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
 
 var app = builder.Build();
 
