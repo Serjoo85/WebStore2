@@ -30,5 +30,15 @@ namespace WebStore.Controllers
 
             return View(employee);
         }
+
+        public IActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        public IActionResult Delete(int id)
+        {
+            return View();
+        }
     }
 }
