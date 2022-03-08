@@ -4,7 +4,7 @@ namespace WebStore.Data;
 
 public class TestData
 {
-    public static readonly List<Employee> __Employees { get; } = new List<Employee>
+    public static List<Employee> __Employees { get; } = new List<Employee>
     {
         new Employee
         {
