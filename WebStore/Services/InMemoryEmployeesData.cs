@@ -24,8 +24,6 @@ public class InMemoryEmployeesData : IEmployeesData
     public Employee? GetById(int id)
     {
         var emp = _employees.FirstOrDefault(emp => emp.Id == id);
-        if (emp == null)
-            throw new Exception("");
         return emp;
     }
 

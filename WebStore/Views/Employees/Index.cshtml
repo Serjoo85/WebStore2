@@ -1,15 +1,17 @@
 ﻿@model IEnumerable<Employee>
 <div class="container">
-    <table class="table">
-        <thead>
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
             <tr>
                 <th>Фамилия</th>
                 <th>Имя</th>
                 <th>Отчество</th>
                 <th>Возраст</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             @foreach (var employee in Model)
             {
                 <tr>
@@ -26,11 +28,21 @@
                             <span class="fa fa-edit"></span>
                         </a>
                     </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@employee.Id">
+                            <span class="fa fa-trash-o"></span>
+                        </a>
+                    </td>
                 </tr>
             }
-        </tbody>
-    </table>
-    <hr/>
+            </tbody>
+        </table>
+        <hr/>
+    }
+    else
+    {
+        <p>The list of employees is empty</p>
+    }
     <p>
         <a asp-controller="Home" asp-action="Index">Home</a>
     </p>
