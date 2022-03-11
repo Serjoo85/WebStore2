@@ -33,11 +33,8 @@ namespace WebStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? Id)
+        public IActionResult Edit(int id)
         {
-            if(Id is not { } id)
-                return View(new EmployeesViewModel());
-            
             var employee = _employeesData.GetById(id);
             if (employee is null)
                 return NotFound();
@@ -69,13 +66,8 @@ namespace WebStore.Controllers
                 Position = model.Position,
                 Salary = model.Salary
             };
-            if (model.Id == 0)
-            {
-                var id = _employeesData.Add(employee);
-                return RedirectToAction(nameof(Details), new {id});
-            }
-            
             _employeesData.Edit(employee);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -115,14 +107,11 @@ namespace WebStore.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View("Edit", new EmployeesViewModel());
+            return View();
         }
 
-        [HttpPost]
         public IActionResult Create(EmployeesViewModel model)
         {
-            //HttpContext h = ControllerContext.HttpContext;
-            //var x = ControllerContext;
             if(model is null)
                 throw new ArgumentNullException(nameof(model));
 
