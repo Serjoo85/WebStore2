@@ -17,6 +17,7 @@ public class InMemoryEmployeesData : IEmployeesData
         _lastFreeId = _employees.Count == 0
             ? 1
             : _employees.Max(emp => emp.Id);
+        _lastFreeId++;
     }
 
     public IEnumerable<Employee> GetAll() => _employees;
@@ -35,7 +36,8 @@ public class InMemoryEmployeesData : IEmployeesData
         //Только для данного сервиса.
         if(_employees.Contains(employee))
             return employee.Id;
-        employee.Id = _lastFreeId++;
+        employee.Id = _lastFreeId++
+            ;
         _employees.Add(employee);
         _Logger.LogWarning("Сотрудник добавлен id{0}", employee.Id);
         return employee.Id;

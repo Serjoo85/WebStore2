@@ -110,8 +110,11 @@ namespace WebStore.Controllers
             return View();
         }
 
+        [HttpPost]
         public IActionResult Create(EmployeesViewModel model)
         {
+            //HttpContext h = ControllerContext.HttpContext;
+            //var x = ControllerContext;
             if(model is null)
                 throw new ArgumentNullException(nameof(model));
 
