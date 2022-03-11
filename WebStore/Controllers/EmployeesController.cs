@@ -103,5 +103,30 @@ namespace WebStore.Controllers
                 return NotFound();
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        public IActionResult Create(EmployeesViewModel model)
+        {
+            if(model is null)
+                throw new ArgumentNullException(nameof(model));
+
+            var employee = new Employee()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Patronymic = model.Patronymic,
+                Age = model.Age,
+                Position = model.Position,
+                Salary = model.Salary
+            };
+            _employeesData.Add(employee);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
