@@ -110,8 +110,18 @@ namespace WebStore.Controllers
             return View();
         }
 
+        [HttpPost]
         public IActionResult Create(EmployeesViewModel model)
         {
+            if (model.LastName == "Иванов" && model.Age < 20)
+            {
+                ModelState.AddModelError("", "Employee with last name Ivanov must be elder than 20!");
+            }
+
+
+            if (!ModelState.IsValid)
+                return View(model);
+
             if(model is null)
                 throw new ArgumentNullException(nameof(model));
 
