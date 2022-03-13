@@ -31,7 +31,7 @@ public class EmployeesViewModel: IValidatableObject
     public IEnumerable<ValidationResult> Validate(ValidationContext context)
     {
         if (Age == 29)
-            yield return new ValidationResult("Boss don't like this number!", new []{ Age.ToString()});
+            yield return new ValidationResult("Boss don't like this number!", new []{ nameof(Age) });
         yield return ValidationResult.Success!;
     }
 }

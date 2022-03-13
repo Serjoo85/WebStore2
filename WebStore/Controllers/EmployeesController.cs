@@ -118,7 +118,6 @@ namespace WebStore.Controllers
                 ModelState.AddModelError("", "Employee with last name Ivanov must be elder than 20!");
             }
 
-
             if (!ModelState.IsValid)
                 return View(model);
 
