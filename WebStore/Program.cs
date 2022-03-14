@@ -9,6 +9,7 @@ var services = builder.Services;
 services.AddControllersWithViews();
 
 services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
+services.AddScoped<IProductData, InMemoryProductData>();
 
 var app = builder.Build();
 
