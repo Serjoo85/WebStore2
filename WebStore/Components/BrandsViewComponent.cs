@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Immutable;
+using Microsoft.AspNetCore.Mvc;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 
@@ -20,9 +21,11 @@ public class BrandsViewComponent : ViewComponent
             {
                 Id = b.Id,
                 Name = b.Name,
+                Order = b.Order,
             })
             .ToList();
 
+            brandViewModels.Sort((a,b) => Comparer<int>.Default.Compare(a.Order,b.Order));
 
         return View(brandViewModels);
     }
