@@ -9,7 +9,7 @@ public class Product : NamedEntity, IOrderedEntity
 
     public int SectionId { get; set; }
 
-    public int? BrandId { get; set; }
+    public int BrandId { get; set; }
 
     public string ImageUrl { get; set; } = null!;
 
