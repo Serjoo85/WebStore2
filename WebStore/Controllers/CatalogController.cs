@@ -24,22 +24,24 @@ public class CatalogController : Controller
         };
 
         var products = _productData.GetProducts(filter);
-        return View(new CatalogViewModel
+        var catalog = new CatalogViewModel
         {
             SectionId = sectionId,
             BrandId = brandId,
             Products = products
                 .OrderBy(p => p.Order)
                 .Select(p => new ProductViewModel
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        Price = p.Price,
-                        ImageUrl = p.ImageUrl,
-                        Order = p.Order,
-                        SectionId = p.SectionId,
-                        BrandId = p.BrandId
-                    }),
-        });
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    Order = p.Order,
+                    SectionId = p.SectionId,
+                    BrandId = p.BrandId
+                }),
+        };
+
+        return View(catalog);
     }
 }
