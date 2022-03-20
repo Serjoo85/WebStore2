@@ -25,6 +25,7 @@ public class EmployeesViewModel: IValidatableObject
     public int Age { get; set; }
 
     public string? Position { get; set; }
+    
     [Range(12000, 2000000, ErrorMessage = "The salary should be between 12000$ and 200000$!")]
     public decimal Salary { get; set; }
 

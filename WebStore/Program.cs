@@ -19,11 +19,7 @@ app.UseRouting();
 
 app.MapDefaultControllerRoute();
 
-//app.UseMiddleware<TestMiddleware>();
-
-app.MapControllerRoute(
-    name: "ActionRoute",
-    pattern: "{controller} {action}({a}, {b})");
+app.UseMiddleware<TestMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
