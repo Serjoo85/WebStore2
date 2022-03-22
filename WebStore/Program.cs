@@ -19,7 +19,8 @@ services.AddDbContext<WebStoreDb>(
             "SqlServer")));
 services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
 
-services.AddScoped<IProductData, InMemoryProductData>();
+//services.AddScoped<IProductData, InMemoryProductData>();
+services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<IDbInitializer, DbInitializer>();
 
 var app = builder.Build();
