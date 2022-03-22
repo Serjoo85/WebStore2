@@ -49,19 +49,42 @@ public class DbInitializer : IDbInitializer
         }
 
         await InitializeProductAsync(cancel).ConfigureAwait(false);
+        await InitializeEmployeeAsync(cancel).ConfigureAwait(false);
 
         _logger.LogInformation("Выполнено успешно");
+    }
+
+    private async Task InitializeEmployeeAsync(CancellationToken cancel)
+    {
+        if (await _db.Employees.AnyAsync(cancel).ConfigureAwait(false))
+        {
+            _logger.LogInformation("Инициализация тестовых данных по сотрудникам в БД не требуется.");
+            return;
+        }
+
+        _logger.LogInformation("Инициализация тестовых данных по сотрудникам в БД ...");
+
+        await using (var transaction = await _db.Database.BeginTransactionAsync(cancel))
+        {
+            _logger.LogInformation("Добавление сотрудников...");
+            await _db.AddRangeAsync(TestData.__Employees).ConfigureAwait(false);
+            await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] ON", cancel).ConfigureAwait(false);
+            await _db.SaveChangesAsync(cancel).ConfigureAwait(false);
+            await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] OFF", cancel).ConfigureAwait(false);
+            await transaction.CommitAsync(cancel).ConfigureAwait(false);
+            _logger.LogInformation("Сотрудники успешно добавлены.");
+        }
     }
 
     private async Task InitializeProductAsync(CancellationToken cancel)
     {
         if (await _db.Products.AnyAsync(cancel).ConfigureAwait(false))
         {
-            _logger.LogInformation("Инициализация тестовых данных в БД не требуется.");
+            _logger.LogInformation("Инициализация тестовых данных по продуктам в БД не требуется.");
             return;
         }
 
-        _logger.LogInformation("Инициализация тестовых данных в БД...");
+        _logger.LogInformation("Инициализация тестовых данных по продуктам в БД...");
 
         await using (var transaction = await _db.Database.BeginTransactionAsync(cancel))
         {
@@ -72,7 +95,6 @@ public class DbInitializer : IDbInitializer
             await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Sections] OFF", cancel).ConfigureAwait(false);
             await transaction.CommitAsync(cancel).ConfigureAwait(false);
             _logger.LogInformation("Секции успешно добавлены.");
-
         }
 
         await using (var transaction = await _db.Database.BeginTransactionAsync(cancel))
