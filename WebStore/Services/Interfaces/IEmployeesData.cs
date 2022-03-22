@@ -6,8 +6,8 @@ public interface IEmployeesData
 {
     IEnumerable<Employee> GetAll();
 
-    Employee GetById(int id);
-    int Add(Employee employee);
-    bool Edit(Employee employee);
-    bool Delete(int id);
+    Task<Employee> GetById(int id, CancellationToken token);
+    Task Add(Employee employee, CancellationToken token);
+    Task Edit(Employee employee, CancellationToken token);
+    Task Delete(int id, CancellationToken token);
 }

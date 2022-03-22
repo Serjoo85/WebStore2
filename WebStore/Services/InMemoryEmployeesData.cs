@@ -4,7 +4,7 @@ using WebStore.Services.Interfaces;
 
 namespace WebStore.Services;
 
-public class InMemoryEmployeesData : IEmployeesData
+public class InMemoryEmployeesData
 {
     private int _lastFreeId;
     private readonly ILogger<InMemoryEmployeesData> _Logger;
@@ -29,19 +29,15 @@ public class InMemoryEmployeesData : IEmployeesData
     }
 
 
-    public int Add(Employee employee)
+    public void Add(Employee employee)
     {
         if(employee is null)
             throw new ArgumentNullException(nameof(employee));
-
-        //Только для данного сервиса.
-        if(_employees.Contains(employee))
-            return employee.Id;
+        
         employee.Id = _lastFreeId++
             ;
         _employees.Add(employee);
         _Logger.LogWarning("Сотрудник добавлен id{0}", employee.Id);
-        return employee.Id;
     }
 
     public bool Edit(Employee employee)

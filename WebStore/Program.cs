@@ -17,11 +17,13 @@ services.AddDbContext<WebStoreDb>(
     opt => opt.UseSqlServer(
         connectionString: configuration.GetConnectionString(
             "SqlServer")));
-services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
 
+//services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
+services.AddScoped<IEmployeesData, SqlEmployeeData>();
 //services.AddScoped<IProductData, InMemoryProductData>();
 services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<IDbInitializer, DbInitializer>();
+
 
 var app = builder.Build();
 
