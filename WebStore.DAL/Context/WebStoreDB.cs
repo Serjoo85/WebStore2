@@ -13,7 +13,7 @@ public class WebStoreDb : DbContext
 
     public WebStoreDb(DbContextOptions<WebStoreDb> options) : base(options)
     {
-        
+
     }
 
     // Пример fluentApi для настройки базы даных.

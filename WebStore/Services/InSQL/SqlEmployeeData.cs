@@ -23,22 +23,29 @@ public class SqlEmployeeData : IEmployeesData
         return await _db.Employees.FirstOrDefaultAsync(emp => emp.Id == id, token).ConfigureAwait(false);
     }
 
-    public async Task Add(Employee employee, CancellationToken token = default)
+    public async Task<int> Add(Employee employee, CancellationToken token = default)
     {
+        _logger.LogInformation("Добавление нового сотрудника ...");
         await _db.Employees.AddAsync(employee, token).ConfigureAwait(false);
-        await _db.SaveChangesAsync(token).ConfigureAwait(false);
+        var x = await _db.SaveChangesAsync(token).ConfigureAwait(false);
+        _logger.LogInformation("Cотрудник {0} успешно добавлен.", employee.LastName);
+        return x;
     }
 
     public async Task Edit(Employee employee, CancellationToken token = default)
     {
+        _logger.LogInformation("Редактирование сотрудника ...");
         _db.Employees.Update(employee);
         await _db.SaveChangesAsync(token).ConfigureAwait(false);
+        _logger.LogInformation("Сотрудник {0} успешно отредактирован.", employee.LastName);
     }
 
     public async Task Delete(int id, CancellationToken token = default)
     {
-        var emp = GetById(id, token);
-        _db.Employees.Remove(await emp);
+        _logger.LogInformation("Удаление сотрудника ...");
+        var emp = await GetById(id, token);
+        _db.Employees.Remove(emp);
         await _db.SaveChangesAsync(token).ConfigureAwait(false);
+        _logger.LogInformation("Сотрудник {0} удалён.", emp.LastName);
     }
 }
