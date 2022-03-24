@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebStore.Models;
+using WebStore.Domain.Entities;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 
@@ -23,9 +23,9 @@ namespace WebStore.Controllers
         }
         
         //[Route("~/employees/info-{Id:int}")]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var employee = _employeesData.GetById(id);
+            var employee = await _employeesData.GetById(id, CancellationToken.None);
             if(employee == null)
                 return NotFound();
 
@@ -33,9 +33,9 @@ namespace WebStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var employee = _employeesData.GetById(id);
+            var employee = await _employeesData.GetById(id, CancellationToken.None);
             if (employee is null)
                 return NotFound();
 
@@ -54,8 +54,11 @@ namespace WebStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(EmployeesViewModel model)
+        public async Task<IActionResult> Edit(EmployeesViewModel model)
         {
+            if (!ModelState.IsValid)
+                return View(model);
+
             var employee = new Employee()
             {
                 Id = model.Id,
@@ -66,18 +69,18 @@ namespace WebStore.Controllers
                 Position = model.Position,
                 Salary = model.Salary
             };
-            _employeesData.Edit(employee);
+            await _employeesData.Edit(employee, CancellationToken.None);
 
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             if(id <= 0)
                 return BadRequest();
 
-            var employee = _employeesData.GetById(id);
+            var employee = await _employeesData.GetById(id, CancellationToken.None);
 
             if (employee is null)
                 return NotFound();
@@ -97,10 +100,11 @@ namespace WebStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (!_employeesData.Delete(id))
-                return NotFound();
+            await _employeesData.Delete(id, CancellationToken.None);
+            //if (!_employeesData.Delete(id, CancellationToken.None))
+            //    return NotFound();
             return RedirectToAction(nameof(Index));
         }
 
@@ -110,8 +114,17 @@ namespace WebStore.Controllers
             return View();
         }
 
-        public IActionResult Create(EmployeesViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> Create(EmployeesViewModel model)
         {
+            if (model.LastName == "Иванов" && model.Age < 20)
+            {
+                ModelState.AddModelError("", "Employee with last name Ivanov must be elder than 20!");
+            }
+
+            if (!ModelState.IsValid)
+                return View(model);
+
             if(model is null)
                 throw new ArgumentNullException(nameof(model));
 
@@ -124,7 +137,7 @@ namespace WebStore.Controllers
                 Position = model.Position,
                 Salary = model.Salary
             };
-            _employeesData.Add(employee);
+            await _employeesData.Add(employee, CancellationToken.None);
 
             return RedirectToAction(nameof(Index));
         }
