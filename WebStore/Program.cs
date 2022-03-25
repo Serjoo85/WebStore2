@@ -12,11 +12,10 @@ var services = builder.Services;
 services.AddControllersWithViews();
 
 var configuration = builder.Configuration;
-
-services.AddDbContext<WebStoreDb>(
-    opt => opt.UseSqlServer(
-        connectionString: configuration.GetConnectionString(
-            "SqlServer")));
+var dbConnectionStringName = configuration["Database"];
+var dbConnectionString = configuration.GetConnectionString(dbConnectionStringName);
+services.AddDbContext<WebStoreDb>(opt =>
+    opt.UseSqlServer(dbConnectionString));
 
 //services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
 services.AddScoped<IEmployeesData, SqlEmployeeData>();
