@@ -42,6 +42,11 @@ app.MapDefaultControllerRoute();
 app.UseMiddleware<TestMiddleware>();
 
 app.MapControllerRoute(
+    name: "EmployeeDetails",
+    pattern: "{controller=Employee}/{action=Index}/{id?}");
+
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
