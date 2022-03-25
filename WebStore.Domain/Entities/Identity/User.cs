@@ -1,10 +1,8 @@
-﻿namespace WebStore.Domain.Entities.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User
-{
+namespace WebStore.Domain.Entities.Identity;
 
-}
-public class Role
+public class User : IdentityUser
 {
 
 }
