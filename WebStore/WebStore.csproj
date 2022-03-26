@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Infrastructure\Convetions\" />
+    <Folder Include="Views\Account\" />
   </ItemGroup>
 
   <ItemGroup>
