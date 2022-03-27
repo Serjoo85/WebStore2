@@ -24,13 +24,16 @@ public class AccountController : Controller
     public IActionResult Register() => View(new RegisterUserViewModel());
 
     [HttpPost]
-    public IActionResult RegiActionResult(RegisterUserViewModel model)
+    [ValidateAntiForgeryToken]
+    public IActionResult Register(RegisterUserViewModel model)
     {
         return RedirectToAction("Index","Home");
     }
-    public IActionResult Login(string returnUrl) => View(new LoginViewModel() {ReturnUrl = returnUrl});
 
+    public IActionResult Login(string returnUrl) => View(new LoginViewModel() {ReturnUrl = returnUrl});
+    
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Login(LoginViewModel model)
     {
         return RedirectToAction("Index", "Home");
