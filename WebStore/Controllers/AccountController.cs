@@ -58,6 +58,12 @@ public class AccountController : Controller
         if (!ModelState.IsValid)
             return View(model);
 
+        var loginResult = await _signInManager.PasswordSignInAsync(
+            model.UserName,
+            model.Password,
+            model.RememberMe,
+            true);
+
         return RedirectToAction("Index", "Home");
     }
 
