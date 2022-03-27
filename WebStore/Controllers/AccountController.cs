@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Entities.Identity;
+using WebStore.ViewModels.Identity;
 
 namespace WebStore.Controllers;
 
@@ -20,9 +21,27 @@ public class AccountController : Controller
         _signInManager = signInManager;
         _logger = logger;
     }
-    public IActionResult Register() => View();
-    public IActionResult Login() => View();
-    public IActionResult Logout() => View();
+    public IActionResult Register() => View(new RegisterUserViewModel());
+
+    [HttpPost]
+    public IActionResult RegiActionResult(RegisterUserViewModel model)
+    {
+        return RedirectToAction("Index","Home");
+    }
+    public IActionResult Login(string returnUrl) => View(new LoginViewModel() {ReturnUrl = returnUrl});
+
+    [HttpPost]
+    public IActionResult Login(LoginViewModel model)
+    {
+        return RedirectToAction("Index", "Home");
+    }
+
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
+    } 
+
     public IActionResult AccessDenied() => View();
 
 }
