@@ -1,6 +1,7 @@
 ﻿using System.Security.Principal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebStore.Domain.Entities.Identity;
 using WebStore.ViewModels.Identity;
 
@@ -25,17 +26,38 @@ public class AccountController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Register(RegisterUserViewModel model)
+    public async Task<IActionResult> Register(RegisterUserViewModel model)
     {
-        return RedirectToAction("Index","Home");
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var user = new User()
+        {
+            UserName = model.UserName,
+        };
+
+        var creationResult = await _userManager.CreateAsync(user, model.Password);
+        if (creationResult.Succeeded)
+        {
+            await _signInManager.SignInAsync(user, false);
+            return RedirectToAction("Index", "Home");
+        }
+
+        foreach (var error in creationResult.Errors)
+            ModelState.AddModelError("",error.Description);
+
+        return View(model);
     }
 
     public IActionResult Login(string returnUrl) => View(new LoginViewModel() {ReturnUrl = returnUrl});
     
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Login(LoginViewModel model)
+    public async Task<IActionResult> Login(LoginViewModel model)
     {
+        if (!ModelState.IsValid)
+            return View(model);
+
         return RedirectToAction("Index", "Home");
     }
 
