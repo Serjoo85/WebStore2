@@ -49,8 +49,15 @@ public class AccountController : Controller
         return View(model);
     }
 
-    public IActionResult Login(string returnUrl) => View(new LoginViewModel() {ReturnUrl = returnUrl});
-    
+    public IActionResult Login(string returnUrl)
+    {
+        var lvm = new LoginViewModel()
+        {
+            ReturnUrl = returnUrl
+        };
+        return View(lvm);
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel model)
@@ -64,7 +71,26 @@ public class AccountController : Controller
             model.RememberMe,
             true);
 
-        return RedirectToAction("Index", "Home");
+        if (loginResult.Succeeded)
+        {
+            //return RedirectToAction(model.ReturnUrl); // Небезопасно!!!
+            //if (Url.IsLocalUrl(model.ReturnUrl))
+            //    return RedirectToAction(model.ReturnUrl);
+            //return RedirectToAction("Index", "Home");
+
+            return LocalRedirect(model.ReturnUrl ?? "/");
+        }
+        //else if (loginResult.RequiresTwoFactor)
+        //{
+        //    // Выполнить двухфакторную авторизацияю.
+        //}
+        //else if (!loginResult.IsLockedOut)
+        //{
+        //    // Отправить пользователю информацию о том, что он заблокирован.
+        //}
+        ModelState.AddModelError("", "Неверное имя пользователя или пароль");
+
+        return View(model);
     }
 
     public async Task<IActionResult> Logout()
