@@ -1,5 +1,4 @@
-﻿using System.Security.Principal;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebStore.Domain.Entities.Identity;
@@ -39,12 +38,15 @@ public class AccountController : Controller
         var creationResult = await _userManager.CreateAsync(user, model.Password);
         if (creationResult.Succeeded)
         {
+            _logger.LogInformation("Пльзователь {0} зарегистрирован", model.UserName);
             await _signInManager.SignInAsync(user, false);
             return RedirectToAction("Index", "Home");
         }
 
         foreach (var error in creationResult.Errors)
             ModelState.AddModelError("",error.Description);
+
+        _logger.LogWarning("Ошибка при регистрации пользователя {0}", model.UserName);
 
         return View(model);
     }
@@ -73,6 +75,7 @@ public class AccountController : Controller
 
         if (loginResult.Succeeded)
         {
+            _logger.LogInformation("Пользователь {0} успешно вошёл в систему", model.UserName);
             //return RedirectToAction(model.ReturnUrl); // Небезопасно!!!
             //if (Url.IsLocalUrl(model.ReturnUrl))
             //    return RedirectToAction(model.ReturnUrl);
@@ -89,13 +92,15 @@ public class AccountController : Controller
         //    // Отправить пользователю информацию о том, что он заблокирован.
         //}
         ModelState.AddModelError("", "Неверное имя пользователя или пароль");
-
+        _logger.LogWarning("Ошибка входа пользователя {0}", model.UserName);
         return View(model);
     }
 
     public async Task<IActionResult> Logout()
     {
+        var userName = User.Identity!.Name;
         await _signInManager.SignOutAsync();
+        _logger.LogInformation("Пользователь {0} вышел из системы", userName);
         return RedirectToAction("Index", "Home");
     } 
 
