@@ -364,3 +364,10 @@ FodyWeavers.xsd
 
 # Files of external libraryes
 **/wwwroot/lib/
+
+# Minimized and bundling files
+**/wwwroot/css/site.css
+**/wwwroot/css/site.*.css
+**/wwwroot/css/site.*
+**/wwwroot/css/site.js
+/WebStore/wwwroot/js/site.js

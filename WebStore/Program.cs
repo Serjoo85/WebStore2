@@ -62,8 +62,6 @@ services.AddTransient<IDbInitializer, DbInitializer>();
 services.AddScoped<IEmployeesData, SqlEmployeeData>();
 services.AddScoped<IProductData, SqlProductData>();
 
-
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -79,7 +77,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 app.MapDefaultControllerRoute();
 
 app.UseMiddleware<TestMiddleware>();
@@ -87,7 +84,6 @@ app.UseMiddleware<TestMiddleware>();
 app.MapControllerRoute(
     name: "EmployeeDetails",
     pattern: "{controller=Employee}/{action=Index}/{id?}");
-
 
 app.MapControllerRoute(
     name: "default",
