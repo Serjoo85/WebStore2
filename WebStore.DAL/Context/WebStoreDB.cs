@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WebStore.Domain.Entities;
+using WebStore.Domain.Entities.Identity;
 
 namespace WebStore.DAL.Context;
 
-public class WebStoreDb : DbContext
+public class WebStoreDb : IdentityDbContext<User, Role, string>
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Section> Sections { get; set; }
