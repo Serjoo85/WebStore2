@@ -13,5 +13,7 @@ public class RegisterUserViewModel
     public string Password { get; set; }
 
     [Required]
+    [Display(Name = "Confirm password")]
+    [DataType(DataType.Password)]
     public string PasswordConfirm { get; set; }
 }
