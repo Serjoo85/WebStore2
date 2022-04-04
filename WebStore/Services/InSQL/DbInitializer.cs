@@ -1,19 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
 using WebStore.Data;
+using WebStore.Domain.Entities.Identity;
 
 namespace WebStore.Services.InSQL;
 
 public class DbInitializer : IDbInitializer
 {
     private readonly WebStoreDb _db;
+    private readonly UserManager<User> _userManager;
+    private readonly RoleManager<Role> _roleManager;
     private readonly ILogger<DbInitializer> _logger;
 
-    public DbInitializer(WebStoreDb db, ILogger<DbInitializer> logger)
+    public DbInitializer(
+        WebStoreDb db,
+        UserManager<User> userManager,
+        RoleManager<Role> roleManager,
+        ILogger<DbInitializer> logger)
     {
         _db = db;
+        _userManager = userManager;
+        _roleManager = roleManager;
         _logger = logger;
     }
+
     public async Task<bool> RemoveAsync(CancellationToken cancel = default)
     {
         _logger.LogInformation("Удаление БД...");
@@ -50,6 +62,7 @@ public class DbInitializer : IDbInitializer
 
         await InitializeProductAsync(cancel).ConfigureAwait(false);
         await InitializeEmployeeAsync(cancel).ConfigureAwait(false);
+        await InitializeIdentityAsync(cancel).ConfigureAwait(false);
 
         _logger.LogInformation("Выполнено успешно");
     }
@@ -70,7 +83,8 @@ public class DbInitializer : IDbInitializer
             await _db.AddRangeAsync(TestData.__Employees).ConfigureAwait(false);
             await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] ON", cancel).ConfigureAwait(false);
             await _db.SaveChangesAsync(cancel).ConfigureAwait(false);
-            await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] OFF", cancel).ConfigureAwait(false);
+
+
             await transaction.CommitAsync(cancel).ConfigureAwait(false);
             _logger.LogInformation("Сотрудники успешно добавлены.");
         }
@@ -121,6 +135,62 @@ public class DbInitializer : IDbInitializer
 
             await transaction.CommitAsync(cancel).ConfigureAwait(false);
         }
-        _logger.LogInformation("Инициализация тестовых данных в БД успешно выполнена.");
+        _logger.LogInformation("Инициализация БД успешно выполнена.");
+    }
+
+    private async Task InitializeIdentityAsync(CancellationToken cancel)
+    {
+        async Task CheckRoleAsync(string RoleName)
+        {
+            if (await _roleManager.RoleExistsAsync(RoleName))
+                _logger.LogInformation("Роль {0} уже существует", RoleName);
+            else
+            {
+                _logger.LogInformation("Создание роли {0} ...", RoleName);
+                await _roleManager.CreateAsync(new Role() { Name = RoleName });
+                _logger.LogInformation("Роль {0} успешно создана.", RoleName);
+            }
+        }
+
+        await CheckRoleAsync(Role.Administrators);
+        await CheckRoleAsync(Role.Users);
+
+        if (await _userManager.FindByNameAsync(User.Administrator) is null)
+        {
+            _logger.LogInformation("Пользователь {0} не найден. Создаю...", User.Administrator);
+
+            var admin = new User
+            {
+                UserName = User.Administrator,
+            };
+
+            // Создаём пользователя.
+            var creationResult = await _userManager.CreateAsync(admin, User.DefaultAdminPassword);
+
+            // Проверяем результат
+            if (creationResult.Succeeded)
+            {
+                _logger.LogInformation("Пользователь {0} успешно создан", User.Administrator);
+
+                await _userManager.AddToRoleAsync(admin, Role.Administrators);
+
+                _logger.LogInformation("Пользователь {0} наделён ролью {1}", User.Administrator, Role.Administrators);
+            }
+            else
+            {
+                var errors = creationResult.Errors.Select(e => e.Description);
+                _logger.LogError("Учётная запись {0} не может быть создана. Ошибки: {1}", 
+                    User.Administrator,
+                    string.Join(", ", errors));
+                throw new InvalidOperationException($"Невозможно создать пользователя {User.Administrator} по причине {string.Join(", ", errors)}");
+            }
+
+
+
+        }
+        else
+        {
+            _logger.LogInformation("Пользователь {0} уже существует.", User.Administrator);
+        }
     }
 }
