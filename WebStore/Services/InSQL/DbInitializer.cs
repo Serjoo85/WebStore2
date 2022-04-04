@@ -86,39 +86,41 @@ public class DbInitializer : IDbInitializer
 
         _logger.LogInformation("Инициализация тестовых данных по продуктам в БД...");
 
-        await using (var transaction = await _db.Database.BeginTransactionAsync(cancel))
+        var sectionsPool = TestData.Sections.ToDictionary(s => s.Id);
+        var brandPool = TestData.Brands.ToDictionary(b => b.Id);
+
+        foreach ( var childSection in TestData.Sections.Where(s => s.ParentId is not null))
+            childSection.Parent = sectionsPool[(int)childSection.ParentId!];
+            
+        foreach (var product in TestData.Products)
         {
-            _logger.LogInformation("Добавление секций...");
-            await _db.Sections.AddRangeAsync(TestData.Sections, cancel).ConfigureAwait(false);
-            await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Sections] ON", cancel).ConfigureAwait(false);
-            await _db.SaveChangesAsync(cancel).ConfigureAwait(false);
-            await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Sections] OFF", cancel).ConfigureAwait(false);
-            await transaction.CommitAsync(cancel).ConfigureAwait(false);
-            _logger.LogInformation("Секции успешно добавлены.");
+            product.Section = sectionsPool[product.SectionId];
+            if(product.BrandId is { } brandId)
+                product.Brand = brandPool[brandId];
+            product.Id = 0;
+            product.SectionId = 0;
+            product.BrandId = null;
         }
 
-        await using (var transaction = await _db.Database.BeginTransactionAsync(cancel))
+        foreach(var brand in TestData.Brands)
+            brand.Id = 0;
+        foreach(var section in TestData.Sections)
         {
-            _logger.LogInformation("Добавление брендов...");
-            await _db.Brands.AddRangeAsync(TestData.Brands, cancel).ConfigureAwait(false);
-            await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Brands] ON", cancel).ConfigureAwait(false);
-            await _db.SaveChangesAsync(cancel).ConfigureAwait(false);
-            await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Brands] OFF", cancel).ConfigureAwait(false);
-            await transaction.CommitAsync(cancel).ConfigureAwait(false);
-            _logger.LogInformation("Бренды успешно добавлены.");
+            section.Id = 0;
+            section.ParentId = null;
         }
 
+        _logger.LogInformation("Добавление данных в БД...");
         await using (var transaction = await _db.Database.BeginTransactionAsync(cancel))
         {
-            _logger.LogInformation("Добавление продуктов...");
-            await _db.Products.AddRangeAsync(TestData.Products, cancel).ConfigureAwait(false);
-            await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Products] ON", cancel).ConfigureAwait(false);
-            await _db.SaveChangesAsync(cancel).ConfigureAwait(false);
-            await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Products] OFF", cancel).ConfigureAwait(false);
-            await transaction.CommitAsync(cancel).ConfigureAwait(false);
-            _logger.LogInformation("Продукты успешно добавлены.");
-        }
+            await _db.Sections.AddRangeAsync(TestData.Sections, cancel);
+            await _db.Brands.AddRangeAsync(TestData.Brands, cancel);
+            await _db.Products.AddRangeAsync(TestData.Products, cancel);
+            
+            await _db.SaveChangesAsync(cancel);
 
+            await transaction.CommitAsync(cancel).ConfigureAwait(false);
+        }
         _logger.LogInformation("Инициализация тестовых данных в БД успешно выполнена.");
     }
 }
