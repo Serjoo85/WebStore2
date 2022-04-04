@@ -9,11 +9,9 @@
     ],
     "minify": {
       "enabled": true,
-      "renameLocals": true,
-      "gzip": true
+      "renameLocals": true
     }
   },
-
   {
     "outputFileName": "wwwroot/js/site.js",
     "inputFiles": [
@@ -24,8 +22,7 @@
     ],
     "minify": {
       "enabled": true,
-      "renameLocals": true,
-      "gzip":  true 
+      "renameLocals": true
     }
   }
 ]

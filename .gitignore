@@ -370,3 +370,8 @@ FodyWeavers.xsd
 **/wwwroot/css/site.*.css
 **/wwwroot/css/site.*
 **/wwwroot/js/site.js
+**/wwwroot/js/site.*.js
+**/wwwroot/js/site.*
+
+
+
