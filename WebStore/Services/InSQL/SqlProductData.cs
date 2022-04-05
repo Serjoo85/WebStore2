@@ -36,11 +36,18 @@ namespace WebStore.Services.InSQL
                 .Include(p => p.Section)
                 .Include(p => p.Brand);
 
-            if (filter is { SectionId: { } })
-                query = query.Where(x => x.SectionId == filter.SectionId);
+            if (filter?.Ids?.Length > 0)
+            {
+                query = query.Where(p => filter.Ids.Contains(p.Id));
+            }
+            else
+            {
+                if (filter is { SectionId: { } })
+                    query = query.Where(x => x.SectionId == filter.SectionId);
 
-            if (filter?.BrandId is { } brandId)
-                query = query.Where(x => x.BrandId == brandId);
+                if (filter?.BrandId is { } brandId)
+                    query = query.Where(x => x.BrandId == brandId);
+            }
             return query;
         }
 
