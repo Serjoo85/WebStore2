@@ -1,4 +1,5 @@
-﻿using WebStore.DAL.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using WebStore.DAL.Context;
 using WebStore.Domain;
 using WebStore.Domain.Entities;
 using WebStore.Services.Interfaces;
@@ -18,19 +19,36 @@ namespace WebStore.Services.InSQL
 
         public IEnumerable<Section> GetSections() => _db.Sections;
 
+        public Section? GetSectionById(int id) => _db.Sections
+            .Include(s => s.Products)
+            .FirstOrDefault(s => s.Id == id);
+
         public IEnumerable<Brand> GetBrands() => _db.Brands;
+
+        public Brand? GetBrandById(int id) => _db.Brands
+            .Include(b => b.Products)
+            .FirstOrDefault(b => b.Id == id);
+        
 
         public IEnumerable<Product> GetProducts(ProductFilter? filter = null)
         {
-            IQueryable<Product> query = _db.Products;
+            IQueryable<Product> query = _db.Products
+                .Include(p => p.Section)
+                .Include(p => p.Brand);
 
             if (filter is { SectionId: { } })
                 query = query.Where(x => x.SectionId == filter.SectionId);
 
             if (filter?.BrandId is { } brandId)
                 query = query.Where(x => x.BrandId == brandId);
-
             return query;
         }
+
+        public Product? GetProductById(int id) => _db.Products
+            .Include(p => p.Section)
+            .Include(p => p.Brand)
+            .FirstOrDefault(p => p.Id == id);
+
+
     }
 }
