@@ -8,7 +8,7 @@ namespace WebStore.Services;
 
 public class InCookiesCartService : ICartService
 {
-    private readonly HttpContextAccessor _httpContextAccessor;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IProductData _productData;
     private readonly string _cartName;
 
@@ -19,6 +19,7 @@ public class InCookiesCartService : ICartService
             var context = _httpContextAccessor.HttpContext;
             var cookies = context!.Response.Cookies;
             var cartCookies = context!.Request.Cookies[_cartName];
+
             if (cartCookies is null)
             {
                 var cart = new Cart();
@@ -39,7 +40,7 @@ public class InCookiesCartService : ICartService
         cookies.Append(_cartName, cart);
     }
 
-    public InCookiesCartService(HttpContextAccessor httpContextAccessor, IProductData productData)
+    public InCookiesCartService(IHttpContextAccessor httpContextAccessor, IProductData productData)
     {
         _httpContextAccessor = httpContextAccessor;
         _productData = productData;
