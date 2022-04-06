@@ -15,7 +15,8 @@
                             <p>
                                 <a asp-controller="Catalog" asp-action="Details" asp-route-Id="@product.Id">@product.Name</a>
                             </p>
-                            <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                            <a class="btn btn-default add-to-cart" asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id"><i class="fa fa-shopping-cart">
+                            </i>Add to cart</a>
                         </div>
                         <div class="product-overlay">
                             <div class="overlay-content">
@@ -23,9 +24,9 @@
                                 <p>
                                     <a asp-controller="Catalog" asp-action="Details" asp-route-Id="@product.Id">@product.Name</a>
                                 </p>
-                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                <a class="btn btn-default add-to-cart" asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                             </div>
-                        </div>
+                        </div>`
                     </div>
                     <div class="choose">
                         <ul class="nav nav-pills nav-justified">

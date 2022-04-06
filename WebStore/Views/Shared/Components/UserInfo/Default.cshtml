@@ -1,7 +1,9 @@
 ﻿<div class="shop-menu pull-right">
     <ul class="nav navbar-nav">
         <li>
-            <a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a>
+            <a asp-controller="Cart" asp-action="Index">
+                <i class="fa fa-shopping-cart"></i> Cart
+            </a>
         </li>
         <li>
             <a asp-controller="Account" asp-action="Login">

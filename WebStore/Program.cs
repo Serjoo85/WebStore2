@@ -13,6 +13,13 @@ var services = builder.Services;
 
 services.AddControllersWithViews();
 
+var configuration = builder.Configuration;
+var dbConnectionStringName = configuration["Database"];
+var dbConnectionString = configuration.GetConnectionString(dbConnectionStringName);
+services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(dbConnectionString));
+
+services.AddTransient<IDbInitializer, DbInitializer>();
+
 services.AddIdentity<User, Role>(/*opt => opt*/)
     .AddEntityFrameworkStores<WebStoreDb>()
     .AddDefaultTokenProviders();
@@ -51,13 +58,6 @@ services.ConfigureApplicationCookie(opt =>
 
     opt.SlidingExpiration = true;
 });
-
-var configuration = builder.Configuration;
-var dbConnectionStringName = configuration["Database"];
-var dbConnectionString = configuration.GetConnectionString(dbConnectionStringName);
-services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(dbConnectionString));
-
-services.AddTransient<IDbInitializer, DbInitializer>();
 
 services.AddScoped<IEmployeesData, SqlEmployeeData>();
 services.AddScoped<IProductData, SqlProductData>();

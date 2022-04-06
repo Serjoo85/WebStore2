@@ -43,12 +43,14 @@
                         </td>
                         <td class="cart_quantity">
                             <div class="cart_quantity_button">
-                                <a class="cart_quantity_up" href="">
-                                     +
+                                <a class="cart_quantity_up" asp-action="Add" asp-route-id="@product.Id">
+                                    +
                                 </a>
+
                                 <input class="cart_quantity_input" type="text" name="quantity" value=@quantity autocomplete="off" size="2">
-                                <a class="cart_quantity_down" href="">
-                                     -
+
+                                <a class="cart_quantity_down" asp-action="Decrement" asp-route-id="@product.Id">
+                                    -
                                 </a>
                             </div>
                         </td>
