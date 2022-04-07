@@ -38,14 +38,15 @@ public class AccountController : Controller
         var creationResult = await _userManager.CreateAsync(user, model.Password);
         if (creationResult.Succeeded)
         {
-            _logger.LogInformation("Пльзователь {0} зарегистрирован", model.UserName);
+            _logger.LogInformation("Пользователь {0} успешно зарегистрирован", model.UserName);
             await _signInManager.SignInAsync(user, false);
             return RedirectToAction("Index", "Home");
         }
 
         foreach (var error in creationResult.Errors)
             ModelState.AddModelError("",error.Description);
-
+        
+        var errorInfo = string.Join(", ", creationResult.Errors.Select(e => e.Description));
         _logger.LogWarning("Ошибка при регистрации пользователя {0}", model.UserName);
 
         return View(model);
