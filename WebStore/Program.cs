@@ -68,7 +68,7 @@ services.ConfigureApplicationCookie(opt =>
 services.AddScoped<IEmployeesData, SqlEmployeeData>();
 services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
-
+services.AddScoped<IOrderService, SqlOrderService>();
 //services.AddAutoMapper(Assembly.GetEntryAssembly());
 services.AddAutoMapper(typeof(Program));
 

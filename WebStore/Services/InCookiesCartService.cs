@@ -18,6 +18,7 @@ public class InCookiesCartService : ICartService
         {
             var context = _httpContextAccessor.HttpContext;
             var cookies = context!.Response.Cookies;
+
             var cartCookies = context!.Request.Cookies[_cartName];
 
             if (cartCookies is null)
@@ -66,7 +67,7 @@ public class InCookiesCartService : ICartService
     {
         var cart = Cart;
 
-        var item = Cart.Items.FirstOrDefault(item => item.ProductId == id);
+        var item = cart.Items.FirstOrDefault(item => item.ProductId == id);
         if (item is null)
             return;
 

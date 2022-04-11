@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebStore.Domain.Entities;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 
@@ -14,7 +12,11 @@ public class CartController : Controller
     public CartController(ICartService cartService) => _cartService = cartService;
 
 
-    public IActionResult Index() => View(new CartOrderViewModel {Cart = _cartService.GetViewModel()});
+    public IActionResult Index()
+    {
+        var cartViewModel = _cartService.GetViewModel();
+        return View(new CartOrderViewModel { Cart =  cartViewModel});
+    }
 
     public IActionResult Add(int id)
     {
@@ -37,7 +39,7 @@ public class CartController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Checkout(OrderViewModel orderModel, [FromServices] IOrderService orderService)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
             return View(nameof(Index), new CartOrderViewModel()
             {
                 Cart = _cartService.GetViewModel(),
