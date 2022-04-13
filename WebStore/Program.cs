@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Services;
 using WebStore.Services.InSQL;
@@ -11,15 +12,28 @@ var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 
+services.AddControllersWithViews(opt =>
+{
+    opt.Conventions.Add(new AddAreasControllerRoute());
+});
+
 services.AddControllersWithViews();
 
 var configuration = builder.Configuration;
 var dbConnectionStringName = configuration["Database"];
 var dbConnectionString = configuration.GetConnectionString(dbConnectionStringName);
-services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(dbConnectionString));
+switch (dbConnectionStringName)
+{
+    case "SqlServer":
+    case "DockerDb":
+        services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(dbConnectionString));
+        break;
+    case "Sqlite":
+        services.AddDbContext<WebStoreDb>(opt => opt.UseSqlite(dbConnectionString, o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+        break;
+}
 
 services.AddTransient<IDbInitializer, DbInitializer>();
-
 services.AddIdentity<User, Role>(/*opt => opt*/)
     .AddEntityFrameworkStores<WebStoreDb>()
     .AddDefaultTokenProviders();
@@ -62,7 +76,7 @@ services.ConfigureApplicationCookie(opt =>
 services.AddScoped<IEmployeesData, SqlEmployeeData>();
 services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
-
+services.AddScoped<IOrderService, SqlOrderService>();
 //services.AddAutoMapper(Assembly.GetEntryAssembly());
 services.AddAutoMapper(typeof(Program));
 
@@ -81,16 +95,22 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapDefaultControllerRoute();
-
 app.UseMiddleware<TestMiddleware>();
 
-app.MapControllerRoute(
-    name: "EmployeeDetails",
-    pattern: "{controller=Employee}/{action=Index}/{id?}");
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=home}/{action=Index}/{id?}"
+        );
+    endpoints.MapControllerRoute(
+            name: "EmployeeDetails",
+            pattern: "{controller=Employee}/{action=Index}/{id?}"
+        );
+    endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}"
+        );
+});
 
 app.Run();

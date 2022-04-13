@@ -80,9 +80,16 @@ public class DbInitializer : IDbInitializer
         await using (var transaction = await _db.Database.BeginTransactionAsync(cancel))
         {
             _logger.LogInformation("Добавление сотрудников...");
-            await _db.AddRangeAsync(TestData.__Employees).ConfigureAwait(false);
-            await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] ON", cancel).ConfigureAwait(false);
-            await _db.SaveChangesAsync(cancel).ConfigureAwait(false);
+            var employes = TestData.__Employees;
+            foreach (var employee in employes)
+            {
+                employee.Id = 0;
+
+            }
+            await _db.AddRangeAsync(employes).ConfigureAwait(false);
+            //await _db.AddRangeAsync(TestData.__Employees).ConfigureAwait(false);
+            //await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] ON", cancel).ConfigureAwait(false);
+            //await _db.SaveChangesAsync(cancel).ConfigureAwait(false);
 
 
             await transaction.CommitAsync(cancel).ConfigureAwait(false);

@@ -373,5 +373,7 @@ FodyWeavers.xsd
 **/wwwroot/js/site.*.js
 **/wwwroot/js/site.*
 
-
-
+#SqliteDb
+**/WebStore/WebStore2/*.db*
+**/WebStore/WebStore2/*.db
+*.db

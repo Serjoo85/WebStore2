@@ -1,0 +1,11 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@{
+    ViewBag.Title = $"Order {ViewBag.OrderId} was confirmed";
+}
+
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <p>Order @ViewBag.OrderId was formed and it will be handled soon.</p>
+    <p>Our manager connect with you.</p>
+    <a asp-controller="Home" asp-action="Index">Go to main</a>
+</div>
