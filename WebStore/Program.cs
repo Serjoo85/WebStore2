@@ -22,10 +22,18 @@ services.AddControllersWithViews();
 var configuration = builder.Configuration;
 var dbConnectionStringName = configuration["Database"];
 var dbConnectionString = configuration.GetConnectionString(dbConnectionStringName);
-services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(dbConnectionString));
+switch (dbConnectionStringName)
+{
+    case "SqlServer":
+    case "DockerDb":
+        services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(dbConnectionString));
+        break;
+    case "Sqlite":
+        services.AddDbContext<WebStoreDb>(opt => opt.UseSqlite(dbConnectionString, o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+        break;
+}
 
 services.AddTransient<IDbInitializer, DbInitializer>();
-
 services.AddIdentity<User, Role>(/*opt => opt*/)
     .AddEntityFrameworkStores<WebStoreDb>()
     .AddDefaultTokenProviders();
