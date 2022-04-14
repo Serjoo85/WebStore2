@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Tools", ".Tools", "{33D530
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.Interfaces", "Services\WebStore.Interfaces\WebStore.Interfaces.csproj", "{7C5D8AA2-66ED-49C5-B9EC-A1CF8AC64CF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{EDA3615D-DFF2-4D96-BA98-85C0B28C9B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDA3615D-DFF2-4D96-BA98-85C0B28C9B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDA3615D-DFF2-4D96-BA98-85C0B28C9B1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C5D8AA2-66ED-49C5-B9EC-A1CF8AC64CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5D8AA2-66ED-49C5-B9EC-A1CF8AC64CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5D8AA2-66ED-49C5-B9EC-A1CF8AC64CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C5D8AA2-66ED-49C5-B9EC-A1CF8AC64CF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{833DFC42-44D2-4BC1-AF36-2ECEF318DE0B} = {CD19EA2B-609E-45C8-B772-63D682A0625E}
 		{4B8D9C25-B6F7-49AB-803C-B3D695CE07BE} = {CD19EA2B-609E-45C8-B772-63D682A0625E}
 		{EDA3615D-DFF2-4D96-BA98-85C0B28C9B1F} = {9681E866-580C-4601-9A1D-C61052A5191B}
+		{7C5D8AA2-66ED-49C5-B9EC-A1CF8AC64CF1} = {DEB02F3E-9F57-452C-A723-97702DA6D726}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {16BD8BDD-76A5-4B2D-9408-98E5DFBC1B13}

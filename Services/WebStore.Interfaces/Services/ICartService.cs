@@ -1,7 +1,6 @@
-﻿using AutoMapper.Configuration.Conventions;
-using WebStore.Domain.ViewModels;
+﻿using WebStore.Domain.ViewModels;
 
-namespace WebStore.Services.Interfaces;
+namespace WebStore.Interfaces.Services;
 
 public interface ICartService
 {

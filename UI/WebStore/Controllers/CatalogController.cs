@@ -3,7 +3,7 @@ using Microsoft.VisualBasic.FileIO;
 using WebStore.Domain;
 using WebStore.Domain.ViewModels;
 using WebStore.Infrastructure.Mapping;
-using WebStore.Services.Interfaces;
+using WebStore.Interfaces.Services;
 
 namespace WebStore.Controllers;
 
