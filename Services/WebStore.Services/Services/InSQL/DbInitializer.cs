@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebStore.DAL.Context;
-using WebStore.Data;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Services.Data;
 
-namespace WebStore.Services.InSQL;
+namespace WebStore.Services.Services.InSQL;
 
 public class DbInitializer : IDbInitializer
 {

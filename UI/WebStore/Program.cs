@@ -6,7 +6,8 @@ using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces.Services;
 using WebStore.Services;
-using WebStore.Services.InSQL;
+using WebStore.Services.Services;
+using WebStore.Services.Services.InSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 

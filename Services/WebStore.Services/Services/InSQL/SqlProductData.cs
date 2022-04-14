@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebStore.DAL.Context;
 using WebStore.Domain;
 using WebStore.Domain.Entities;
 using WebStore.Interfaces.Services;
 
-namespace WebStore.Services.InSQL
+namespace WebStore.Services.Services.InSQL
 {
     public class SqlProductData : IProductData
     {

@@ -1,9 +1,9 @@
-﻿using WebStore.Data;
-using WebStore.Domain;
+﻿using WebStore.Domain;
 using WebStore.Domain.Entities;
 using WebStore.Interfaces.Services;
+using WebStore.Services.Data;
 
-namespace WebStore.Services;
+namespace WebStore.Services.Services;
 
 [Obsolete("Будет удаён в ближайшее время", true)]
 public class InMemoryProductData : IProductData

@@ -1,7 +1,8 @@
-﻿using WebStore.Data;
+﻿using Microsoft.Extensions.Logging;
 using WebStore.Domain.Entities;
+using WebStore.Services.Data;
 
-namespace WebStore.Services;
+namespace WebStore.Services.Services;
 
 public class InMemoryEmployeesData
 {
