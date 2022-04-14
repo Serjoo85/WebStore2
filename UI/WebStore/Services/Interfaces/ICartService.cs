@@ -1,5 +1,5 @@
 ﻿using AutoMapper.Configuration.Conventions;
-using WebStore.ViewModels;
+using WebStore.Domain.ViewModels;
 
 namespace WebStore.Services.Interfaces;
 

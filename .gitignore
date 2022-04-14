@@ -377,3 +377,5 @@ FodyWeavers.xsd
 **/WebStore/WebStore2/*.db*
 **/WebStore/WebStore2/*.db
 *.db
+*.db-shm
+*.db-wal
