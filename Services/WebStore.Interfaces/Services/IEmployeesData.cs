@@ -1,0 +1,13 @@
+﻿using WebStore.Domain.Entities;
+
+namespace WebStore.Interfaces.Services;
+
+public interface IEmployeesData
+{
+    IEnumerable<Employee> GetAll();
+
+    Task<Employee> GetById(int id, CancellationToken token);
+    Task<int> Add(Employee employee, CancellationToken token);
+    Task Edit(Employee employee, CancellationToken token);
+    Task Delete(int id, CancellationToken token);
+}

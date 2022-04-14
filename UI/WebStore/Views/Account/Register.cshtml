@@ -1,0 +1,29 @@
+﻿@model WebStore.Domain.ViewModels.Identity.RegisterUserViewModel;
+@{
+    ViewBag.Title = "Register new user";
+}
+<section id="form"><!--form-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="signup-form"><!--sign up form-->
+                    <h2>New User Signup!</h2>
+                    <form asp-action="Register" asp-antiforgery="true">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
+                        <input asp-for="UserName" placeholder="Name"/>
+                        <span asp-validation-for="UserName"></span>
+
+                        <input asp-for="Password" placeholder="Password"/>
+                        <span asp-validation-for="Password"></span>
+
+                        <input asp-for="PasswordConfirm" placeholder="Password confirm"/>
+                        <span asp-validation-for="PasswordConfirm"></span>
+
+                        <button type="submit" class="btn btn-default">Signup</button>
+                    </form>
+                </div><!--/sign up form-->
+            </div>
+        </div>
+    </div>
+</section><!--/form-->
