@@ -1,0 +1,11 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "Test my WebAPI";
+}
+
+<div class="container">
+    @foreach (var value in Model)
+    {
+        <p>@value</p>   
+    }
+</div>

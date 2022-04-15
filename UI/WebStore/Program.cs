@@ -8,6 +8,7 @@ using WebStore.Interfaces.Services;
 using WebStore.Services;
 using WebStore.Services.Services;
 using WebStore.Services.Services.InSQL;
+using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,10 +75,15 @@ services.ConfigureApplicationCookie(opt =>
     opt.SlidingExpiration = true;
 });
 
+services.AddScoped<IValuesService, ValuesClient>();
 services.AddScoped<IEmployeesData, SqlEmployeeData>();
 services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
 services.AddScoped<IOrderService, SqlOrderService>();
+
+services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
+
 //services.AddAutoMapper(Assembly.GetEntryAssembly());
 services.AddAutoMapper(typeof(Program));
 
