@@ -19,11 +19,7 @@ public class ValuesController : ControllerBase
     }
 
     [HttpGet("GetAll")]
-    public IEnumerable<string> GetAll()
-    {
-        ICollection<int> x = new List<int>();
-        return Values.Values;
-    }
+    public IEnumerable<string> GetAll() => Values.Values;
 
     [HttpGet("GetById/{id:int}")]
     public IActionResult GetById(int id)
