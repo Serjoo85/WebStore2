@@ -5,9 +5,9 @@ using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces.Services;
-using WebStore.Services;
 using WebStore.Services.Services;
 using WebStore.Services.Services.InSQL;
+using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +23,7 @@ services.AddControllersWithViews();
 var configuration = builder.Configuration;
 var dbConnectionStringName = configuration["Database"];
 var dbConnectionString = configuration.GetConnectionString(dbConnectionStringName);
+
 switch (dbConnectionStringName)
 {
     case "SqlServer":
@@ -50,10 +51,8 @@ services.Configure<IdentityOptions>(opt =>
     opt.Password.RequiredUniqueChars = 3;
     opt.Password.RequiredLength = 3;
 #endif
-
     opt.User.RequireUniqueEmail = false;
     opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
     opt.Lockout.AllowedForNewUsers = false;
     opt.Lockout.MaxFailedAccessAttempts = 10;
     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
@@ -74,10 +73,14 @@ services.ConfigureApplicationCookie(opt =>
     opt.SlidingExpiration = true;
 });
 
+services.AddScoped<IValuesService, ValuesClient>();
 services.AddScoped<IEmployeesData, SqlEmployeeData>();
 services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
 services.AddScoped<IOrderService, SqlOrderService>();
+
+services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
 //services.AddAutoMapper(Assembly.GetEntryAssembly());
 services.AddAutoMapper(typeof(Program));
 

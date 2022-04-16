@@ -11,7 +11,6 @@
             // Обработка информации из Context.Request/Response
             await _next(context);
             // Обработка результата обработки запроса.
-   
         }
     }
 }
