@@ -1,4 +1,4 @@
-﻿namespace WebStore.WebAPI.Clients.Values.Base;
+﻿namespace WebStore.WebAPI.Clients.Base;
 
 public abstract class BaseClient
 {

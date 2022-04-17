@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Json;
 using WebStore.Interfaces.Services;
-using WebStore.WebAPI.Clients.Values.Base;
+using WebStore.WebAPI.Clients.Base;
 
 namespace WebStore.WebAPI.Clients.Values;
 
