@@ -56,8 +56,13 @@ public class ValuesController : ControllerBase
     public IActionResult Edit(int id, [FromBody] string value)
     {
         if (!Values.ContainsKey(id))
-            return NotFound(new {id});
+        {
+            _logger.LogWarning("Попытка редактирования отсутствующего значения с Id:{0}",id);
+            return NotFound(new { id });
+        }
+
         Values[id] = value;
+        _logger.LogInformation("Выполнгено изменение значений \"{0}\" с Id:{1}", value, id);
         return Ok(new {value});
     }
 
@@ -65,9 +70,13 @@ public class ValuesController : ControllerBase
     public IActionResult Delete(int id)
     {
         if (!Values.ContainsKey(id))
-            return NotFound(new{ id });
+        {
+            _logger.LogWarning("Попытка удалить не существующий элемент с Id:{0}", id);
+            return NotFound(new { id });
+        }
         var value = Values[id];
         Values.Remove(id);
+        _logger.LogInformation("Удалёнл элемент с Id:{0}", id);
         return Ok(new { value });
     }
 }
