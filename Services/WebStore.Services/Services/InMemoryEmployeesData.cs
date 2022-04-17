@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using WebStore.Domain.Entities;
+using WebStore.Interfaces.Services;
 using WebStore.Services.Data;
 
 namespace WebStore.Services.Services;
 
-public class InMemoryEmployeesData
+public class InMemoryEmployeesData : IEmployeesData
 {
     private int _lastFreeId;
     private readonly ILogger<InMemoryEmployeesData> _Logger;
@@ -22,14 +23,30 @@ public class InMemoryEmployeesData
 
     public IEnumerable<Employee> GetAll() => _employees;
 
-    public Employee? GetById(int id)
+
+    public Task<int> Add(Employee employee, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Edit(Employee employee, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Delete(int id, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Employee> GetById(int id, CancellationToken token)
     {
         var emp = _employees.FirstOrDefault(emp => emp.Id == id);
         return emp;
     }
 
 
-    public void Add(Employee employee)
+    public async Task<int> Add(Employee employee)
     {
         if(employee is null)
             throw new ArgumentNullException(nameof(employee));
@@ -38,16 +55,17 @@ public class InMemoryEmployeesData
             ;
         _employees.Add(employee);
         _Logger.LogWarning("Сотрудник добавлен id{0}", employee.Id);
+        return employee.Id;
     }
 
-    public bool Edit(Employee employee)
+    public async Task<bool> Edit(Employee employee)
     {
         if (employee is null)
             throw new ArgumentNullException(nameof(employee));
         if (_employees.Contains(employee))
             return true;
     
-        var db_emp = GetById(employee.Id);
+        var db_emp = await GetById(employee.Id, CancellationToken.None);
         if (db_emp is null)
         {
             _Logger.LogWarning("Попытка редактирования несуществуюющего сотрудника id{0}", db_emp.Id);
@@ -65,9 +83,9 @@ public class InMemoryEmployeesData
         return true;
     }
 
-    public bool Delete(int id)
+    public async Task<bool> Delete(int id)
     {
-        var db_emp = GetById(id);
+        var db_emp = await GetById(id, CancellationToken.None);
         if (db_emp is null)
         {
             _Logger.LogWarning("Попытка удалить отсутствующего сотрудника Id {0}", id);
