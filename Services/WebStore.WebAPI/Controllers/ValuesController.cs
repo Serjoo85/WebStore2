@@ -19,7 +19,11 @@ public class ValuesController : ControllerBase
     }
 
     [HttpGet("GetAll")]
-    public IEnumerable<string> GetAll() => Values.Values;
+    public IActionResult GetAll()
+    {
+        var values = Values.Values;
+        return Ok(values);
+    }
 
     [HttpGet("GetById/{id:int}")]
     public IActionResult GetById(int id)
@@ -27,9 +31,10 @@ public class ValuesController : ControllerBase
         //if(!Values.ContainsKey(id))
         //    return NotFound();
         //return Ok(Values[id]);
+
         if (Values.TryGetValue(id, out var value))
             return Ok(value);
-        return NotFound();
+        return NotFound(new { id });
     }
 
     [HttpGet("count")]
@@ -43,6 +48,7 @@ public class ValuesController : ControllerBase
             : 1;
         Values.Add(id, value);
         var rout = nameof(GetById);
+        _logger.LogInformation("Добавлено значение {0} c Id:{1}", value, id);
         return CreatedAtAction(rout, new { id }, value);
     }
 
@@ -50,17 +56,18 @@ public class ValuesController : ControllerBase
     public IActionResult Edit(int id, [FromBody] string value)
     {
         if (!Values.ContainsKey(id))
-            return NotFound();
+            return NotFound(new {id});
         Values[id] = value;
-        return Ok();
+        return Ok(new {value});
     }
 
     [HttpDelete("{id:int}")]
     public IActionResult Delete(int id)
     {
         if (!Values.ContainsKey(id))
-            return NotFound();
+            return NotFound(new{ id });
+        var value = Values[id];
         Values.Remove(id);
-        return Ok();
+        return Ok(new { value });
     }
 }
