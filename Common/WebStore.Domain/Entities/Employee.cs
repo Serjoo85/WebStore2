@@ -23,4 +23,6 @@ public class Employee : Entity
     [Required]
     [Column(TypeName = "decimal(18,2)")]
     public decimal Salary { get; set; }
+
+    public override string ToString() => $"{LastName} {FirstName} {Patronymic}";
 }
