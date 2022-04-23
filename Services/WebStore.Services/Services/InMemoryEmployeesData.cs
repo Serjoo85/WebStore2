@@ -24,29 +24,13 @@ public class InMemoryEmployeesData : IEmployeesData
     public IEnumerable<Employee> GetAll() => _employees;
 
 
-    public Task<int> Add(Employee employee, CancellationToken token)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task Edit(Employee employee, CancellationToken token)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task Delete(int id, CancellationToken token)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<Employee> GetById(int id, CancellationToken token)
+    public Employee GetById(int id)
     {
         var emp = _employees.FirstOrDefault(emp => emp.Id == id);
         return emp;
     }
 
-
-    public async Task<int> Add(Employee employee)
+    public int Add(Employee employee)
     {
         if(employee is null)
             throw new ArgumentNullException(nameof(employee));
@@ -58,14 +42,14 @@ public class InMemoryEmployeesData : IEmployeesData
         return employee.Id;
     }
 
-    public async Task<bool> Edit(Employee employee)
+    public bool Edit(Employee employee)
     {
         if (employee is null)
             throw new ArgumentNullException(nameof(employee));
         if (_employees.Contains(employee))
             return true;
     
-        var db_emp = await GetById(employee.Id, CancellationToken.None);
+        var db_emp = GetById(employee.Id);
         if (db_emp is null)
         {
             _Logger.LogWarning("Попытка редактирования несуществуюющего сотрудника id{0}", db_emp.Id);
@@ -83,9 +67,9 @@ public class InMemoryEmployeesData : IEmployeesData
         return true;
     }
 
-    public async Task<bool> Delete(int id)
+    public bool Delete(int id)
     {
-        var db_emp = await GetById(id, CancellationToken.None);
+        var db_emp = GetById(id);
         if (db_emp is null)
         {
             _Logger.LogWarning("Попытка удалить отсутствующего сотрудника Id {0}", id);
@@ -94,4 +78,26 @@ public class InMemoryEmployeesData : IEmployeesData
         _employees.Remove(db_emp);
         return true;
     }
+
+    #region AsyncPart
+    public Task<Employee?> GetByIdAsync(int id, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int> AddAsync(Employee employee, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> EditAsync(Employee employee, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> DeleteAsync(int id, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    } 
+    #endregion
 }

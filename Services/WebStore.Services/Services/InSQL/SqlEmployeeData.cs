@@ -19,34 +19,45 @@ public class SqlEmployeeData : IEmployeesData
 
     public IEnumerable<Employee> GetAll() => _db.Employees;
 
-    public async Task<Employee> GetById(int id, CancellationToken token = default)
+    public async Task<Employee> GetByIdAsync(int id, CancellationToken token = default)
     { 
         return await _db.Employees.FirstOrDefaultAsync(emp => emp.Id == id, token).ConfigureAwait(false);
     }
 
-    public async Task<int> Add(Employee employee, CancellationToken token = default)
+    public Employee GetById(int id) => GetByIdAsync(id).Result;
+
+    public int Add(Employee employee) => AddAsync(employee).Result;
+
+    public async Task<int> AddAsync(Employee employee, CancellationToken token = default)
     {
         _logger.LogInformation("Добавление нового сотрудника ...");
         await _db.Employees.AddAsync(employee, token).ConfigureAwait(false);
-        var x = await _db.SaveChangesAsync(token).ConfigureAwait(false);
+        var id = await _db.SaveChangesAsync(token).ConfigureAwait(false);
         _logger.LogInformation("Cотрудник {0} успешно добавлен.", employee.LastName);
-        return x;
+        return id;
     }
 
-    public async Task Edit(Employee employee, CancellationToken token = default)
+    public bool Edit(Employee employee) => EditAsync(employee).Result;
+
+    public async Task<bool> EditAsync(Employee employee, CancellationToken token = default)
     {
         _logger.LogInformation("Редактирование сотрудника ...");
         _db.Employees.Update(employee);
         await _db.SaveChangesAsync(token).ConfigureAwait(false);
         _logger.LogInformation("Сотрудник {0} успешно отредактирован.", employee.LastName);
+        //TODO обернуть в трай кетч.
+        return true;
     }
 
-    public async Task Delete(int id, CancellationToken token = default)
+    public bool Delete(int id) => DeleteAsync(id).Result;
+    public async Task<bool> DeleteAsync(int id, CancellationToken token = default)
     {
         _logger.LogInformation("Удаление сотрудника ...");
-        var emp = await GetById(id, token);
+        var emp = await GetByIdAsync(id, token);
         _db.Employees.Remove(emp);
         await _db.SaveChangesAsync(token).ConfigureAwait(false);
         _logger.LogInformation("Сотрудник {0} удалён.", emp.LastName);
+        //TODO переделать черзе трай кетч.
+        return true;
     }
 }
