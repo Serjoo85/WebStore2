@@ -19,6 +19,11 @@ public class SqlEmployeeData : IEmployeesData
 
     public IEnumerable<Employee> GetAll() => _db.Employees;
 
+    public Task<IEnumerable<Employee>> GetAllAsync()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Employee> GetByIdAsync(int id, CancellationToken token = default)
     { 
         return await _db.Employees.FirstOrDefaultAsync(emp => emp.Id == id, token).ConfigureAwait(false);
@@ -32,9 +37,9 @@ public class SqlEmployeeData : IEmployeesData
     {
         _logger.LogInformation("Добавление нового сотрудника ...");
         await _db.Employees.AddAsync(employee, token).ConfigureAwait(false);
-        var id = await _db.SaveChangesAsync(token).ConfigureAwait(false);
+        await _db.SaveChangesAsync(token).ConfigureAwait(false);
         _logger.LogInformation("Cотрудник {0} успешно добавлен.", employee.LastName);
-        return id;
+        return employee.Id;
     }
 
     public bool Edit(Employee employee) => EditAsync(employee).Result;
