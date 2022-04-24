@@ -19,14 +19,19 @@ public abstract class BaseClient
     {
         var response = await Http.GetAsync(url).ConfigureAwait(false);
 
-        if(response.StatusCode == HttpStatusCode.NoContent)
-            return default;
-        var result = await response
-            .EnsureSuccessStatusCode()
-            .Content
-            .ReadFromJsonAsync<T>()
-            .ConfigureAwait(false);
-        return result;
+        switch (response.StatusCode)
+        {
+            case HttpStatusCode.NoContent:
+            case HttpStatusCode.NotFound:
+                return default;
+            default:
+                var result = await response
+                    .EnsureSuccessStatusCode()
+                    .Content
+                    .ReadFromJsonAsync<T>()
+                    .ConfigureAwait(false);
+                return result;
+        }
     }
 
     protected HttpResponseMessage Post<T>(string url, T value) => PostAsync(url, value).Result;

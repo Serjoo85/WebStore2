@@ -62,12 +62,12 @@ services.ConfigureApplicationCookie(opt =>
     opt.SlidingExpiration = true;
 });
 
-services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
+services.AddScoped<IEmployeesData, SqlEmployeeData>();
 services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
 services.AddScoped<IOrderService, SqlOrderService>();
 
-// Add services to the container.
+// AddAsync services to the container.
 services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();

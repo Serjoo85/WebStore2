@@ -80,6 +80,12 @@ public class InMemoryEmployeesData : IEmployeesData
     }
 
     #region AsyncPart
+
+    public Task<IEnumerable<Employee>> GetAllAsync()
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<Employee?> GetByIdAsync(int id, CancellationToken token)
     {
         throw new NotImplementedException();
