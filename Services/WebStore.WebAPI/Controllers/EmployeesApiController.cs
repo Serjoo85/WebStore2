@@ -11,7 +11,7 @@ public class EmployeesApiController : ControllerBase
     private readonly IEmployeesData _employeesData;
     private readonly ILogger _logger;
 
-    [HttpGet("/MyMethod/{id:int}")]
+    [HttpGet("api/employees/MyMethod/{id:int}")]
     public IActionResult MyRandomMethod(int id)
     {
         return Ok(777);
@@ -42,10 +42,7 @@ public class EmployeesApiController : ControllerBase
             return NotFound();
         return Ok(employee);
     }
-
-
-
-
+    
     [HttpPost]
     public IActionResult Add([FromBody] Employee employee)
     {
