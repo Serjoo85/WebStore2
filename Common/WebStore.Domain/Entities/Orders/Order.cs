@@ -23,5 +23,5 @@ public class Order : Entity
     public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
 
     [NotMapped]
-    public decimal TotalPrice => Items.Sum(i => i.Price);
+    public decimal TotalPrice => Items.Sum(i => i.TotalItemPrice);
 }

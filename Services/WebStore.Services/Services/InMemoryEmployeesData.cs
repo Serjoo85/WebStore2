@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using WebStore.Domain.Entities;
+using WebStore.Interfaces.Services;
 using WebStore.Services.Data;
 
 namespace WebStore.Services.Services;
 
-public class InMemoryEmployeesData
+public class InMemoryEmployeesData : IEmployeesData
 {
     private int _lastFreeId;
     private readonly ILogger<InMemoryEmployeesData> _Logger;
@@ -22,14 +23,14 @@ public class InMemoryEmployeesData
 
     public IEnumerable<Employee> GetAll() => _employees;
 
-    public Employee? GetById(int id)
+
+    public Employee GetById(int id)
     {
         var emp = _employees.FirstOrDefault(emp => emp.Id == id);
         return emp;
     }
 
-
-    public void Add(Employee employee)
+    public int Add(Employee employee)
     {
         if(employee is null)
             throw new ArgumentNullException(nameof(employee));
@@ -38,6 +39,7 @@ public class InMemoryEmployeesData
             ;
         _employees.Add(employee);
         _Logger.LogWarning("Сотрудник добавлен id{0}", employee.Id);
+        return employee.Id;
     }
 
     public bool Edit(Employee employee)
@@ -76,4 +78,32 @@ public class InMemoryEmployeesData
         _employees.Remove(db_emp);
         return true;
     }
+
+    #region AsyncPart
+
+    public Task<IEnumerable<Employee>> GetAllAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Employee?> GetByIdAsync(int id, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int> AddAsync(Employee employee, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> EditAsync(Employee employee, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> DeleteAsync(int id, CancellationToken token)
+    {
+        throw new NotImplementedException();
+    } 
+    #endregion
 }

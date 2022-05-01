@@ -7,7 +7,9 @@ using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Services;
 using WebStore.Services.Services.InSQL;
-using WebStore.WebAPI.Clients.Values;
+using WebStore.WebAPI.Clients.Employees;
+using WebStore.WebAPI.Clients.Orders;
+using WebStore.WebAPI.Clients.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,10 @@ services.AddControllersWithViews(opt =>
 });
 
 services.AddControllersWithViews();
+//services.AddControllersWithViews()
+//    .AddNewtonsoftJson(options =>
+//        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+//    );
 
 var configuration = builder.Configuration;
 var dbConnectionStringName = configuration["Database"];
@@ -73,15 +79,15 @@ services.ConfigureApplicationCookie(opt =>
     opt.SlidingExpiration = true;
 });
 
-services.AddScoped<IValuesService, ValuesClient>();
-services.AddScoped<IEmployeesData, SqlEmployeeData>();
-services.AddScoped<IProductData, SqlProductData>();
+//services.AddScoped<IValuesService, ValuesClient>();
+//services.AddScoped<IEmployeesData, SqlEmployeeData>();
+
+//services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
-services.AddScoped<IOrderService, SqlOrderService>();
-
-services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-
-//services.AddAutoMapper(Assembly.GetEntryAssembly());
+//services.AddScoped<IOrderService, SqlOrderService>();
+services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
@@ -89,7 +95,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    await dbInitializer.InitializeAsync(true);
+    await dbInitializer.InitializeAsync(false);
 }
 
 app.UseStaticFiles();

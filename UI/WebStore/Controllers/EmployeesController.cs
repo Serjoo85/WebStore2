@@ -25,7 +25,7 @@ namespace WebStore.Controllers
         //[Route("~/employees/info-{Id:int}")]
         public async Task<IActionResult> Details(int id)
         {
-            var employee = await _employeesData.GetById(id, CancellationToken.None);
+            var employee = await _employeesData.GetByIdAsync(id, CancellationToken.None);
             if(employee == null)
                 return NotFound();
 
@@ -35,7 +35,7 @@ namespace WebStore.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var employee = await _employeesData.GetById(id, CancellationToken.None);
+            var employee = await _employeesData.GetByIdAsync(id, CancellationToken.None);
             if (employee is null)
                 return NotFound();
 
@@ -69,7 +69,7 @@ namespace WebStore.Controllers
                 Position = model.Position,
                 Salary = model.Salary
             };
-            await _employeesData.Edit(employee, CancellationToken.None);
+            await _employeesData.EditAsync(employee, CancellationToken.None);
 
             return RedirectToAction(nameof(Index));
         }
@@ -80,7 +80,7 @@ namespace WebStore.Controllers
             if(id <= 0)
                 return BadRequest();
 
-            var employee = await _employeesData.GetById(id, CancellationToken.None);
+            var employee = await _employeesData.GetByIdAsync(id, CancellationToken.None);
 
             if (employee is null)
                 return NotFound();
@@ -102,8 +102,8 @@ namespace WebStore.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _employeesData.Delete(id, CancellationToken.None);
-            //if (!_employeesData.Delete(id, CancellationToken.None))
+            await _employeesData.DeleteAsync(id, CancellationToken.None);
+            //if (!_employeesData.DeleteAsync(id, CancellationToken.None))
             //    return NotFound();
             return RedirectToAction(nameof(Index));
         }
@@ -137,7 +137,7 @@ namespace WebStore.Controllers
                 Position = model.Position,
                 Salary = model.Salary
             };
-            await _employeesData.Add(employee, CancellationToken.None);
+            await _employeesData.AddAsync(employee, CancellationToken.None);
 
             return RedirectToAction(nameof(Index));
         }

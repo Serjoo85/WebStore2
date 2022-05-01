@@ -18,18 +18,36 @@ namespace WebStore.Services.Services.InSQL
             _logger = logger;
         }
 
-        public IEnumerable<Section> GetSections() => _db.Sections;
+        public IEnumerable<Section> GetSections() => _db.Sections.Include(s => s.Products);
+        public Task<IEnumerable<Section>> GetSectionsAsync()
+        {
+            throw new NotImplementedException();
+        }
 
         public Section? GetSectionById(int id) => _db.Sections
             .Include(s => s.Products)
             .FirstOrDefault(s => s.Id == id);
 
-        public IEnumerable<Brand> GetBrands() => _db.Brands;
+        public Task<Section?> GetSectionByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Brand> GetBrands() => _db.Brands.Include(s => s.Products);
+        public Task<IEnumerable<Brand>> GetBrandsAsync()
+        {
+            throw new NotImplementedException();
+        }
 
         public Brand? GetBrandById(int id) => _db.Brands
             .Include(b => b.Products)
             .FirstOrDefault(b => b.Id == id);
-        
+
+        public Task<Brand?> GetBrandByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public IEnumerable<Product> GetProducts(ProductFilter? filter = null)
         {
@@ -52,11 +70,19 @@ namespace WebStore.Services.Services.InSQL
             return query;
         }
 
+        public Task<IEnumerable<Product>> GetProductsAsync(ProductFilter? filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public Product? GetProductById(int id) => _db.Products
             .Include(p => p.Section)
             .Include(p => p.Brand)
             .FirstOrDefault(p => p.Id == id);
 
-
+        public Task<Product?> GetProductByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
