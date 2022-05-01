@@ -10,8 +10,7 @@ public class CartController : Controller
     private readonly ICartService _cartService;
 
     public CartController(ICartService cartService) => _cartService = cartService;
-
-
+    
     public IActionResult Index()
     {
         var cartViewModel = _cartService.GetViewModel();
@@ -35,6 +34,7 @@ public class CartController : Controller
         _cartService.Remove(id);
         return RedirectToAction("Index", "Cart");
     }
+
     [Authorize]
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Checkout(OrderViewModel orderModel, [FromServices] IOrderService orderService)

@@ -65,6 +65,7 @@ public class SqlOrderService : IOrderService
             Address = orderViewModel.Address,
             Phone = orderViewModel.Phone,
             Description = orderViewModel.Description,
+            
         };
 
         var productsIds = cart.Items.Select(i => i.Product!.Id).ToArray();
