@@ -42,8 +42,8 @@ public static class BrandDTOMapper
             Name = brand.Name,
             Order = brand.Order,
         };
-    [return: NotNullIfNotNull("brand")]
 
+    [return: NotNullIfNotNull("brand")]
     public static Brand? FromDTO(this BrandDTO? dto) => dto is null
         ? null
         : new Brand

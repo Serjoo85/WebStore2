@@ -12,7 +12,7 @@ public class ProductsClient : BaseClient, IProductData
 {
     private readonly ILogger<ProductsClient> _logger;
 
-    public ProductsClient(HttpClient client, ILogger<ProductsClient> logger) : base(client, "api/products")
+    public ProductsClient(HttpClient client, ILogger<ProductsClient>? logger) : base(client, "api/products")
     {
         _logger = logger;
     }
