@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Entities;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 
 namespace WebStore.WebAPI.Controllers;
 
 [ApiController]
-[Route("api/employees")]
+[Route(WebApiAddresses.Employees)]
 public class EmployeesApiController : ControllerBase
 {
     private readonly IEmployeesData _employeesData;
     private readonly ILogger _logger;
 
-    [HttpGet("api/employees/MyMethod/{id:int}")]
+    [HttpGet("MyMethod/{id:int}")]
     public IActionResult MyRandomMethod(int id)
     {
         return Ok(777);

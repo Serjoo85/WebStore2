@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebStore.Interfaces;
 
-namespace WebStore.WebAPI.Controllers.Identity
+namespace WebStore.WebAPI.Controllers.Identity;
+
+[ApiController]
+[Route(WebApiAddresses.V1.Identity.Roles)]
+public class RolesApiController : ControllerBase
 {
-    public class RolesApiController
-    {
 
-    }
 }

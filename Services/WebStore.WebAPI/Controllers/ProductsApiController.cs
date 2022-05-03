@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain;
 using WebStore.Domain.DTO;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 
 namespace WebStore.WebAPI.Controllers;
 
 [ApiController]
-[Route("api/products")]
+[Route(WebApiAddresses.Products)]
 public class ProductsApiController : ControllerBase
 {
     private readonly IProductData _productData;
@@ -18,7 +19,7 @@ public class ProductsApiController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("/sections")]  //GET -> http://localhost:5001/api/products/sections
+    [HttpGet("sections")]  //GET -> http://localhost:5001/api/products/sections
     public IActionResult GetSections()
     {
         _logger.LogInformation("Запрос секций...");
@@ -34,7 +35,7 @@ public class ProductsApiController : ControllerBase
         return Ok(sections);
     }
 
-    [HttpGet("/section/{id:int}")]
+    [HttpGet("section/{id:int}")]
     public IActionResult GetSectionById(int id)
     {
         _logger.LogInformation("Запрос секции c Id:{0}.", id);
@@ -50,7 +51,7 @@ public class ProductsApiController : ControllerBase
         return Ok(section);
     }
 
-    [HttpGet("/brands")]
+    [HttpGet("brands")]
     public IActionResult GetBrands()
     {
         _logger.LogInformation("Запрос брендов ...");
@@ -64,7 +65,7 @@ public class ProductsApiController : ControllerBase
         return Ok(brands);
     }
 
-    [HttpGet("/brand/{id:int}")]
+    [HttpGet("brand/{id:int}")]
     public IActionResult GetBrandById(int id)
     {
         _logger.LogInformation("Запрос бренда c Id:{0}.", id);
@@ -78,7 +79,7 @@ public class ProductsApiController : ControllerBase
         return Ok(brand);
     }
 
-    [HttpPost("/products")]
+    [HttpPost("products")]
     public IActionResult GetProducts(ProductFilter? filter)
     {
         _logger.LogInformation("Запрос продуктов ...");
@@ -92,7 +93,7 @@ public class ProductsApiController : ControllerBase
         return Ok(products);
     }
 
-    [HttpPost("/products/{id:int}")]
+    [HttpPost("products/{id:int}")]
     public IActionResult GetProductsById(int id)
     {
         _logger.LogInformation("Запрос продукта c Id:{0}.", id);
