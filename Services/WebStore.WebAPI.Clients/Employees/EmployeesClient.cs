@@ -12,7 +12,7 @@ public class EmployeesClient : BaseClient, IEmployeesData
 {
     private readonly ILogger _logger;
 
-    public EmployeesClient(HttpClient client, ILogger<EmployeesClient> logger) : base(client, WebApiAddresses.Employees)
+    public EmployeesClient(HttpClient client, ILogger<EmployeesClient> logger) : base(client, WebApiAddresses.V1.Employees)
     {
         _logger = logger;
     }

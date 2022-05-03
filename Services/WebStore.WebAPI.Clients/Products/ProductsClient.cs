@@ -13,7 +13,7 @@ public class ProductsClient : BaseClient, IProductData
 {
     private readonly ILogger<ProductsClient> _logger;
 
-    public ProductsClient(HttpClient client, ILogger<ProductsClient>? logger) : base(client, WebApiAddresses.Products)
+    public ProductsClient(HttpClient client, ILogger<ProductsClient>? logger) : base(client, WebApiAddresses.V1.Products)
     {
         _logger = logger;
     }

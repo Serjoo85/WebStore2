@@ -10,7 +10,7 @@ namespace WebStore.WebAPI.Clients.Orders;
 
 public class OrdersClient : BaseClient, IOrderService
 {
-    public OrdersClient(HttpClient client) : base(client, WebApiAddresses.Orders)
+    public OrdersClient(HttpClient client) : base(client, WebApiAddresses.V1.Orders)
     {
     }
 
