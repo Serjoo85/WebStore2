@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using WebStore.Domain.Entities;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 using WebStore.WebAPI.Clients.Base;
 
@@ -11,7 +12,7 @@ public class EmployeesClient : BaseClient, IEmployeesData
 {
     private readonly ILogger _logger;
 
-    public EmployeesClient(HttpClient client, ILogger<EmployeesClient> logger) : base(client, "api/employees")
+    public EmployeesClient(HttpClient client, ILogger<EmployeesClient> logger) : base(client, WebApiAddresses.Employees)
     {
         _logger = logger;
     }
