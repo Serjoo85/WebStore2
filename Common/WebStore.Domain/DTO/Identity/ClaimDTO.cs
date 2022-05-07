@@ -1,13 +1,13 @@
 ﻿using System.Security.Claims;
 
-namespace WebStore.Domain.DTO;
+namespace WebStore.Domain.DTO.Identity;
 
-public class ClaimDTO : UserDTO
+public class ClaimDto : UserDto
 {
     public IEnumerable<Claim> Claims { get; set; } = null!;
 }
 
-public class ReplaceClaimDTO : UserDTO
+public class ReplaceClaimDto : UserDto
 {
     public Claim Claim { get; set; } = null!;
 

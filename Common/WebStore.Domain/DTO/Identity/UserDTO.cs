@@ -1,24 +1,24 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using WebStore.Domain.Entities.Identity;
 
-namespace WebStore.Domain.DTO;
+namespace WebStore.Domain.DTO.Identity;
 
-public class UserDTO
+public class UserDto
 {
     public User User { get; set; } = null!;
 }
 
-public class AddLogginDTO : UserDTO
+public class AddLoginDto : UserDto
 {
     public UserLoginInfo UserLoginInfo { get; set; } = null!;
 }
 
-public class PasswordHashDTO : UserDTO
+public class PasswordHashDto : UserDto
 {
     public string Hash { get; set; } = null!;
 }
 
-public class SetLockoutDTO : UserDTO
+public class SetLockoutDto : UserDto
 {
     public DateTimeOffset? LockoutEnd { get; set; }
 }
