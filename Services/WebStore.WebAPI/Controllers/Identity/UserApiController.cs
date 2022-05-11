@@ -111,6 +111,7 @@ public class UserApiController : ControllerBase
         return user;
     }
 
+    [HttpPost("Role/{role}")]
     public async Task AddToRoleAsync([FromBody] User user, string role /*, [FromServices] WebStoreDb db*/)
     {
         await _userStore.AddToRoleAsync(user, role);
@@ -212,6 +213,7 @@ public class UserApiController : ControllerBase
         return flag;
     }
 
+    [HttpPost("SetTwoFactorEnabled")]
     public async Task<bool> SetTwoFactorEnabledAsync([FromBody] User user, bool enabled)
     {
         await _userStore.SetTwoFactorEnabledAsync(user, enabled);

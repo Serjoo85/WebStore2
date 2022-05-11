@@ -23,7 +23,11 @@ public class OrdersClient : BaseClient, IOrderService
         //    .ReadFromJsonAsync<IEnumerable<OrderDTO>>(cancellationToken:token)
         //    .Result;
         //return orders.FromDTO();
-        var orders = await GetAsync<IEnumerable<OrderDto>>($"{Address}/user/{userName}", token).ConfigureAwait(false);
+        var response = await PostAsync($"{Address}/GetOrdersByUserName", userName, token).ConfigureAwait(false);
+        var orders = await response
+            .EnsureSuccessStatusCode()
+            .Content
+            .ReadFromJsonAsync<IEnumerable<OrderDto>>(cancellationToken: token);
         return orders!.FromDTO()!;
     }
 

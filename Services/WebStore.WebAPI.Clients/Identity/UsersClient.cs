@@ -5,12 +5,13 @@ using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces;
 using WebStore.WebAPI.Clients.Base;
 using WebStore.Domain.DTO.Identity;
+using WebStore.Interfaces.Services.Identity;
 
 namespace WebStore.WebAPI.Clients.Identity;
 
-public class UserClient : BaseClient //, IUsersClient
+public class UsersClient : BaseClient, IUsersClient
 {
-    public UserClient(HttpClient client) : base(client, WebApiAddresses.V1.Identity.Users)
+    public UsersClient(HttpClient client) : base(client, WebApiAddresses.V1.Identity.Users)
     {
         
     }
@@ -49,7 +50,7 @@ public class UserClient : BaseClient //, IUsersClient
 
     public async Task<string> GetNormalizedUserNameAsync(User user, CancellationToken cancel)
     {
-        var response = await PostAsync($"{Address}/NormalUserName/", user, cancel);
+        var response = await PostAsync($"{Address}/NormalizedUserName/", user, cancel);
         return await response
            .EnsureSuccessStatusCode()
            .Content
@@ -59,7 +60,7 @@ public class UserClient : BaseClient //, IUsersClient
 
     public async Task SetNormalizedUserNameAsync(User user, string name, CancellationToken cancel)
     {
-        var response = await PostAsync($"{Address}/NormalUserName/{name}", user, cancel);
+        var response = await PostAsync($"{Address}/NormalizedUserName/{name}", user, cancel);
         user.NormalizedUserName = await response
            .EnsureSuccessStatusCode()
            .Content
@@ -117,7 +118,7 @@ public class UserClient : BaseClient //, IUsersClient
 
     public async Task<User> FindByNameAsync(string name, CancellationToken cancel)
     {
-        return (await GetAsync<User>($"{Address}/User/Normal/{name}", cancel).ConfigureAwait(false))!;
+        return (await GetAsync<User>($"{Address}/User/Normalize/{name}", cancel).ConfigureAwait(false))!;
     }
 
     #endregion

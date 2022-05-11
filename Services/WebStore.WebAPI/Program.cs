@@ -29,6 +29,8 @@ services.AddIdentity<User, Role>(/*opt => opt*/)
     .AddEntityFrameworkStores<WebStoreDb>()
     .AddDefaultTokenProviders();
 
+services.AddTransient<IDbInitializer, DbInitializer>();
+
 // Настройки Identity
 services.Configure<IdentityOptions>(opt =>
 {
@@ -78,6 +80,12 @@ services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    await dbInitializer.InitializeAsync(false);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

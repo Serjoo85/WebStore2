@@ -91,7 +91,7 @@ public class RolesApiController : ControllerBase
         return role.Name;
     }
 
-    [HttpPost()]
+    [HttpPost("GetNormalizedRoleName")]
     public async Task<string> GetNormalizedRoleNameAsync(Role role)
     {
         var normalizedName = await _roleStore.GetNormalizedRoleNameAsync(role);

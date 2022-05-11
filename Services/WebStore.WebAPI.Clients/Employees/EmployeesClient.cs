@@ -18,7 +18,7 @@ public class EmployeesClient : BaseClient, IEmployeesData
 
     public IEnumerable<Employee> GetAll()
     {
-        var employees = Get<IEnumerable<Employee>>(Address);
+        var employees = Get<IEnumerable<Employee>>($"{Address}/all");
         return employees! ?? Enumerable.Empty<Employee>();
     }
 

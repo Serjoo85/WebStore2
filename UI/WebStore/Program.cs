@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Services;
-using WebStore.Services.Services.InSQL;
 using WebStore.WebAPI.Clients.Employees;
+using WebStore.WebAPI.Clients.Identity;
 using WebStore.WebAPI.Clients.Orders;
 using WebStore.WebAPI.Clients.Products;
 
@@ -27,24 +25,36 @@ services.AddControllersWithViews();
 //    );
 
 var configuration = builder.Configuration;
-var dbConnectionStringName = configuration["Database"];
-var dbConnectionString = configuration.GetConnectionString(dbConnectionStringName);
+//var dbConnectionStringName = configuration["Database"];
+//var dbConnectionString = configuration.GetConnectionString(dbConnectionStringName);
 
-switch (dbConnectionStringName)
-{
-    case "SqlServer":
-    case "DockerDb":
-        services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(dbConnectionString));
-        break;
-    case "Sqlite":
-        services.AddDbContext<WebStoreDb>(opt => opt.UseSqlite(dbConnectionString, o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
-        break;
-}
+//switch (dbConnectionStringName)
+//{
+//    case "SqlServer":
+//    case "DockerDb":
+//        services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(dbConnectionString));
+//        break;
+//    case "Sqlite":
+//        services.AddDbContext<WebStoreDb>(opt => opt.UseSqlite(dbConnectionString, o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+//        break;
+//}
 
-services.AddTransient<IDbInitializer, DbInitializer>();
+//services.AddTransient<IDbInitializer, DbInitializer>();
 services.AddIdentity<User, Role>(/*opt => opt*/)
-    .AddEntityFrameworkStores<WebStoreDb>()
+    //.AddEntityFrameworkStores<WebStoreDb>()
     .AddDefaultTokenProviders();
+
+services.AddHttpClient("WebStoreApiIdentity", client => client.BaseAddress = new(configuration["WebAPI"]))
+    .AddTypedClient<IUserStore<User>, UsersClient>()
+    .AddTypedClient<IUserRoleStore<User>, UsersClient>()
+    .AddTypedClient<IUserPasswordStore<User>, UsersClient>()
+    .AddTypedClient<IUserEmailStore<User>, UsersClient>()
+    .AddTypedClient<IUserPhoneNumberStore<User>, UsersClient>()
+    .AddTypedClient<IUserTwoFactorStore<User>, UsersClient>()
+    .AddTypedClient<IUserClaimStore<User>, UsersClient>()
+    .AddTypedClient<IUserLoginStore<User>, UsersClient>()
+    .AddTypedClient<IRoleStore<Role>, RolesClient>()
+    ;
 
 // Настройки Identity
 services.Configure<IdentityOptions>(opt =>
@@ -85,18 +95,28 @@ services.ConfigureApplicationCookie(opt =>
 //services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
 //services.AddScoped<IOrderService, SqlOrderService>();
-services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
+
+
+//services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+//services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+//services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
+services.AddHttpClient("WebStoreApi", client => client.BaseAddress = new(configuration["WebAPI"]))
+    .AddTypedClient<IOrderService, OrdersClient>()
+    .AddTypedClient<IEmployeesData, EmployeesClient>()
+    .AddTypedClient<IProductData, ProductsClient>();
+    
+
 services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    await dbInitializer.InitializeAsync(false);
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+//    await dbInitializer.InitializeAsync(false);
+//}
 
 app.UseStaticFiles();
 

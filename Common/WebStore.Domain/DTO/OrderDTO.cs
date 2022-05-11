@@ -59,7 +59,7 @@ namespace WebStore.Domain.DTO
             Phone = orderDTO.Phone,
         };
 
-        public static IEnumerable<Order?> FromDTO(this IEnumerable<OrderDto?> orders) => orders.Select(FromDTO);
+        public static IEnumerable<Order?> FromDTO(this IEnumerable<OrderDto?> orders) => orders.Select(FromDTO) ?? Enumerable.Empty<Order>();
 
         public static IEnumerable<OrderItemDTO> ToDTO(this CartViewModel cartViewModel) => cartViewModel.Items
             .Select(i => new OrderItemDTO()

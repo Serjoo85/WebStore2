@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.DTO;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 
 namespace WebStore.WebAPI.Controllers;
 
 [ApiController]
-[Route("api/orders")]
+[Route(WebApiAddresses.V1.Orders)]
 public class OrderApiController: ControllerBase
 {
     private readonly IOrderService _orderService;
@@ -17,7 +18,7 @@ public class OrderApiController: ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("orders")]
+    [HttpPost("GetOrdersByUserName")]
     public async Task<IActionResult> GetUserOrdersAsync([FromBody] string userName)
     {
         var orders = await _orderService.GetUserOrdersAsync(userName);

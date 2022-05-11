@@ -8,6 +8,7 @@ public interface IUsersClient :
     IUserPasswordStore<User>,
     IUserEmailStore<User>,
     IUserPhoneNumberStore<User>,
+    IUserTwoFactorStore<User>,
     IUserLoginStore<User>,
     IUserClaimStore<User>
 {
