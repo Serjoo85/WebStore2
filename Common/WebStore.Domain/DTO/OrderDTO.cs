@@ -4,7 +4,7 @@ using WebStore.Domain.ViewModels;
 
 namespace WebStore.Domain.DTO
 {
-    public class OrderDTO
+    public class OrderDto
     {
         public int Id { get; set; }
         public string Phone { get; set; } = null!;
@@ -32,9 +32,9 @@ namespace WebStore.Domain.DTO
 
     public static class OrderDTOMapper
     {
-        public static OrderDTO? ToDTO(this Order? order) => order is null 
+        public static OrderDto? ToDTO(this Order? order) => order is null 
         ? null
-        : new OrderDTO
+        : new OrderDto
         {
             Address = order.Address,
             Description = order.Description,
@@ -44,10 +44,10 @@ namespace WebStore.Domain.DTO
             Phone = order.Phone,
         };
 
-        public static IEnumerable<OrderDTO?> ToDTO(this IEnumerable<Order?> orders) => orders.Select(ToDTO);
+        public static IEnumerable<OrderDto?> ToDTO(this IEnumerable<Order?> orders) => orders.Select(ToDTO);
 
 
-        public static Order? FromDTO(this OrderDTO? orderDTO) => orderDTO is null
+        public static Order? FromDTO(this OrderDto? orderDTO) => orderDTO is null
         ? null
         : new Order
         {
@@ -59,7 +59,7 @@ namespace WebStore.Domain.DTO
             Phone = orderDTO.Phone,
         };
 
-        public static IEnumerable<Order?> FromDTO(this IEnumerable<OrderDTO?> orders) => orders.Select(FromDTO);
+        public static IEnumerable<Order?> FromDTO(this IEnumerable<OrderDto?> orders) => orders.Select(FromDTO);
 
         public static IEnumerable<OrderItemDTO> ToDTO(this CartViewModel cartViewModel) => cartViewModel.Items
             .Select(i => new OrderItemDTO()

@@ -53,11 +53,11 @@ public static class BrandDTOMapper
             Name = dto.Name,
         };
 
-    public static IEnumerable<BrandDTO>? ToDTO(this IEnumerable<Brand>? brands) => 
-        brands?.Select(b => b.ToDTO());
+    public static IEnumerable<BrandDTO> ToDTO(this IEnumerable<Brand>? brands) => 
+        brands?.Select(ToDTO)!;
 
-    public static IEnumerable<Brand>? FromDTO(this IEnumerable<BrandDTO>? dtos) => 
-        dtos?.Select(d => d.FromDTO());
+    public static IEnumerable<Brand> FromDTO(this IEnumerable<BrandDTO>? dtos) => 
+        dtos?.Select(FromDTO)!;
 }
 
 public static class SectionDTOMapper
@@ -84,10 +84,10 @@ public static class SectionDTOMapper
         };
 
     public static IEnumerable<SectionDTO> ToDTO(this IEnumerable<Section>? sections) =>
-        sections?.Select(b => b.ToDTO());
+        sections?.Select(ToDTO)!;
 
     public static IEnumerable<Section> FromDTO(this IEnumerable<SectionDTO>? dtos) =>
-        dtos?.Select(d => d.FromDTO());
+        dtos?.Select(FromDTO)!;
 }
 
 public static class ProductDTOMapper
@@ -122,8 +122,8 @@ public static class ProductDTOMapper
         };
 
     public static IEnumerable<ProductDTO> ToDTO(this IEnumerable<Product>? products) =>
-        products?.Select(p => p.ToDTO());
+        products?.Select(ToDTO)!;
 
     public static IEnumerable<Product> FromDTO(this IEnumerable<ProductDTO>? dtos) =>
-        dtos?.Select(p => p.FromDTO());
+        dtos?.Select(FromDTO)!;
 }

@@ -20,7 +20,7 @@ public class WebStoreDb : IdentityDbContext<User, Role, string>
 
     }
 
-    // Пример fluentApi для настройки базы даных.
+    // Пример fluentApi для настройки базы данных.
     //protected override void OnModelCreating(ModelBuilder model)
     //{
     //    base.OnModelCreating(model);

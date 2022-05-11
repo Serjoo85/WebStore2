@@ -46,7 +46,7 @@ public class UserApiController : ControllerBase
         return userName;
     }
 
-    [HttpPost("Username/{name}")]
+    [HttpPost("UserName/{name}")]
     public async Task<string> SetUserNameAsync([FromBody] User user, string name)
     {
         await _userStore.SetUserNameAsync(user, name);
@@ -54,14 +54,14 @@ public class UserApiController : ControllerBase
         return user.UserName;
     }
 
-    [HttpPost("NormalizeUserName")]
+    [HttpPost("NormalizedUserName")]
     public async Task<string> GetNormalizedUserNameAsync([FromBody] User user)
     {
         var normalizedUserName = await _userStore.GetNormalizedUserNameAsync(user);
         return normalizedUserName;
     }
 
-    [HttpPost("NormalizedUserName")]
+    [HttpPost("NormalizedUserName/{name}")]
     public async Task<string> SetNormalizedUserNameAsync([FromBody] User user, string name)
     {
         await _userStore.SetNormalizedUserNameAsync(user, name);
@@ -76,7 +76,7 @@ public class UserApiController : ControllerBase
 
         if (!creationResult.Succeeded)
         {
-            _logger.LogWarning("Ошибка добавления ползователя {0}:{1}", 
+            _logger.LogWarning("Ошибка добавления пользователя {0}:{1}", 
                 user.UserName,
                 string.Join(", ", creationResult.Errors.Select(e => e.Description)));
         }
