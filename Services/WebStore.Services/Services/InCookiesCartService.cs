@@ -117,7 +117,7 @@ public class InCookiesCartService : ICartService
         {
             Items = cart.Items
                 .Where(item => productsView.ContainsKey(item.ProductId))
-                .Select(item => (productsView[item.ProductId], item.Quantity))
+                .Select(item => (productsView[item.ProductId], item.Quantity))!
         };
     }
 }

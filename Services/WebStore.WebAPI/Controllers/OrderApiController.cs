@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.DTO;
-using WebStore.Domain.Entities;
-using WebStore.Domain.ViewModels;
 using WebStore.Interfaces.Services;
 
 namespace WebStore.WebAPI.Controllers;
@@ -33,7 +31,7 @@ public class OrderApiController: ControllerBase
         if (order is null)
             return NotFound();
 
-        return Ok(order.ToDTO);
+        return Ok(order.ToDTO());
     }
 
     [HttpPost("create")]

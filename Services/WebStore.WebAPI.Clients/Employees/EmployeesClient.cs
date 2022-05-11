@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using WebStore.Domain.Entities;
 using WebStore.Interfaces;
@@ -67,21 +66,21 @@ public class EmployeesClient : BaseClient, IEmployeesData
 
     #region AsyncPart
 
-    public Task<IEnumerable<Employee >> GetAllAsync()
+    public async Task<IEnumerable<Employee >> GetAllAsync()
     {
-        var employees = GetAsync<IEnumerable<Employee>>(Address);
-        return employees ?? Task.FromResult(Enumerable.Empty<Employee>());
+        var employees = await GetAsync<IEnumerable<Employee>>(Address);
+        return employees ?? Enumerable.Empty<Employee>();
     }
 
     public async Task<Employee?> GetByIdAsync(int id, CancellationToken token)
     {
-        var employee = await GetAsync<Employee>($"{Address}/{id}");
+        var employee = await GetAsync<Employee>($"{Address}/{id}", token);
         return employee;
     }
 
     public async Task<int> AddAsync(Employee employee, CancellationToken token)
     {
-        var response = await PostAsync(Address, employee);
+        var response = await PostAsync(Address, employee, token);
         var addedEmployee = response.Content.ReadFromJsonAsync<Employee>(cancellationToken: token).Result;
         if (addedEmployee is null)
             return -1;
@@ -92,20 +91,20 @@ public class EmployeesClient : BaseClient, IEmployeesData
 
     public async Task<bool> EditAsync(Employee employee, CancellationToken token)
     {
-        var response = await PutAsync(Address, employee);
+        var response = await PutAsync(Address, employee, token);
         var success = response.EnsureSuccessStatusCode()
             .Content
-            .ReadFromJsonAsync<bool>()
+            .ReadFromJsonAsync<bool>(cancellationToken: token)
             .Result;
         return success;
     }
 
     public async Task<bool> DeleteAsync(int id, CancellationToken token)
     {
-        var response = await DeleteAsync($"{Address}/{id}");
+        var response = await DeleteAsync($"{Address}/{id}", token);
         var success = response.EnsureSuccessStatusCode()
             .Content
-            .ReadFromJsonAsync<bool>()
+            .ReadFromJsonAsync<bool>(cancellationToken: token)
             .Result;
         return success;
     } 
