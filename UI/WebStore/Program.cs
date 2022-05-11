@@ -19,29 +19,9 @@ services.AddControllersWithViews(opt =>
 });
 
 services.AddControllersWithViews();
-//services.AddControllersWithViews()
-//    .AddNewtonsoftJson(options =>
-//        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-//    );
 
 var configuration = builder.Configuration;
-//var dbConnectionStringName = configuration["Database"];
-//var dbConnectionString = configuration.GetConnectionString(dbConnectionStringName);
-
-//switch (dbConnectionStringName)
-//{
-//    case "SqlServer":
-//    case "DockerDb":
-//        services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(dbConnectionString));
-//        break;
-//    case "Sqlite":
-//        services.AddDbContext<WebStoreDb>(opt => opt.UseSqlite(dbConnectionString, o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
-//        break;
-//}
-
-//services.AddTransient<IDbInitializer, DbInitializer>();
 services.AddIdentity<User, Role>(/*opt => opt*/)
-    //.AddEntityFrameworkStores<WebStoreDb>()
     .AddDefaultTokenProviders();
 
 services.AddHttpClient("WebStoreApiIdentity", client => client.BaseAddress = new(configuration["WebAPI"]))
@@ -89,18 +69,7 @@ services.ConfigureApplicationCookie(opt =>
     opt.SlidingExpiration = true;
 });
 
-//services.AddScoped<IValuesService, ValuesClient>();
-//services.AddScoped<IEmployeesData, SqlEmployeeData>();
-
-//services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<ICartService, InCookiesCartService>();
-//services.AddScoped<IOrderService, SqlOrderService>();
-
-
-
-//services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-//services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-//services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 
 services.AddHttpClient("WebStoreApi", client => client.BaseAddress = new(configuration["WebAPI"]))
     .AddTypedClient<IOrderService, OrdersClient>()
@@ -111,12 +80,6 @@ services.AddHttpClient("WebStoreApi", client => client.BaseAddress = new(configu
 services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-//    await dbInitializer.InitializeAsync(false);
-//}
 
 app.UseStaticFiles();
 
